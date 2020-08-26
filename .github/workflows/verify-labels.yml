@@ -1,0 +1,24 @@
+name: Pull Request Labels
+
+on:
+    pull_request:
+        types: [opened, labeled, unlabeled, synchronize]
+
+jobs:
+    check_pr_labels:
+        name: Verify that the PR has the appropriate label(s)
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check for version label
+              if: ${{ github.base_ref == 'master' }}
+              uses: mheap/github-action-required-labels@v1
+              with:
+                  mode: exactly
+                  count: 1
+                  labels: 'patch, minor, major'
+            - name: Check for issue type label
+              uses: mheap/github-action-required-labels@v1
+              with:
+                  mode: minimum
+                  count: 1
+                  labels: 'fix, bug, bugfix, feature, enhancement, chore'
