@@ -14,7 +14,10 @@
 		"isolatedModules": true,
 		"noEmit": true,
 		"jsx": "react",
-		"baseUrl": "src"
+		"baseUrl": "src",
+		"declaration": true,
+		"declarationDir": "lib/types"
 	},
-	"include": ["src"]
+	"include": ["src"],
+	"exclude": ["src/__tests__"]
 }
