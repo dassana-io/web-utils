@@ -2,7 +2,6 @@ module.exports = {
 	extends: [
 		'react-app',
 		'eslint:recommended',
-		'plugin:react/recommended',
 		'plugin:@typescript-eslint/recommended' // Uses the recommended rules from the @typescript-eslint/eslint-plugin
 	],
 	globals: {
@@ -11,17 +10,15 @@ module.exports = {
 		module: true,
 		window: true
 	},
-	ignorePatterns: ['src/api/*/'],
 	parser: '@typescript-eslint/parser', // Specifies the ESLint parser
 	parserOptions: {
 		ecmaFeatures: {
-			jsx: true,
 			modules: true
 		},
 		ecmaVersion: 2020, // Allows for the parsing of modern ECMAScript features
 		sourceType: 'module' // Allows for the use of imports
 	},
-	plugins: ['react', '@typescript-eslint'],
+	plugins: ['@typescript-eslint'],
 	rules: {
 		// Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
 		// e.g. "@typescript-eslint/explicit-function-return-type": "off",
@@ -64,10 +61,5 @@ module.exports = {
 		],
 		'sort-keys': ['warn', 'asc'],
 		'space-in-parens': ['warn', 'never']
-	},
-	settings: {
-		react: {
-			version: 'detect'
-		}
 	}
 }
