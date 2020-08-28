@@ -1,0 +1,26 @@
+name: Publish to NPMJS and GPR
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    publish-to-npm-and-gpr:
+        runs-on: ubuntu-latest
+        steps:
+            # Checkout the repo
+            - uses: actions/checkout@master
+
+            # Publish to GitHub Package Registry
+            - uses: actions/setup-node@master
+              with:
+                  node-version: 12
+                  registry-url: https://npm.pkg.github.com/
+                  scope: '@dassana-io'
+            - name: Publish to GitHub Package Registry
+              run: |
+                  npm install
+                  npm run build
+                  npm publish
+              env:
+                  NODE_AUTH_TOKEN: ${{github.token}}
