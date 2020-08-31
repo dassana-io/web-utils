@@ -1,3 +1,4 @@
+import axiosRetry from 'axios-retry'
 import { initializeLocalStorageMock } from '../testUtils'
 import { omit } from 'lodash'
 import { api, DASSANA_REQUEST_ID, generatePatch, TOKEN } from '../apiUtils'
@@ -12,6 +13,7 @@ jest.mock('axios', () => {
 })
 const mockedAxios = axios as jest.Mocked<typeof axios>
 
+jest.mock('axios-retry')
 jest.mock('uuid', () => ({
 	v4: () => 'abc'
 }))
@@ -23,33 +25,52 @@ const mockToken = 'fakeToken'
 initializeLocalStorageMock()
 
 describe('api', () => {
+	beforeEach(async () => {
+		localStorage.setItem(TOKEN, mockToken)
+		mockedAxios.get.mockImplementationOnce(() =>
+			Promise.resolve({ data: { foo: 'bar' } })
+		)
+
+		await api().get(mockEndpoint)
+	})
+
+	afterEach(() => {
+		jest.clearAllMocks()
+	})
+
+	it('should call axios.create with the correct headers', () => {
+		expect(mockedAxios.create).toHaveBeenCalledWith(
+			expect.objectContaining({
+				headers: expect.objectContaining({
+					Authorization: `Bearer ${mockToken}`,
+					[DASSANA_REQUEST_ID]: 'abc'
+				})
+			})
+		)
+	})
+
+	it('should call axios-retry', () => {
+		expect(axiosRetry).toHaveBeenCalledTimes(1)
+	})
+
 	describe('get', () => {
-		beforeEach(async () => {
-			localStorage.setItem(TOKEN, mockToken)
-			mockedAxios.get.mockImplementationOnce(() =>
+		it('should call axios.get with the correct endpoint', () => {
+			expect(mockedAxios.get).toHaveBeenCalledWith(mockEndpoint)
+		})
+	})
+
+	describe('put', () => {
+		it('should call axios.put with the correct endpoint and pass the correct data', async () => {
+			mockedAxios.put.mockImplementationOnce(() =>
 				Promise.resolve({ data: { foo: 'bar' } })
 			)
 
-			await api().get(mockEndpoint)
-		})
+			await api().put(mockEndpoint, mockRequestData)
 
-		afterEach(() => {
-			jest.clearAllMocks()
-		})
-
-		it('should calls axios.create with the correct headers', () => {
-			expect(mockedAxios.create).toHaveBeenCalledWith(
-				expect.objectContaining({
-					headers: expect.objectContaining({
-						Authorization: `Bearer ${mockToken}`,
-						[DASSANA_REQUEST_ID]: 'abc'
-					})
-				})
+			expect(mockedAxios.put).toHaveBeenCalledWith(
+				mockEndpoint,
+				mockRequestData
 			)
-		})
-
-		it('should call axios.get with the correct endpoint', () => {
-			expect(mockedAxios.get).toHaveBeenCalledWith(mockEndpoint)
 		})
 	})
 
