@@ -7,4 +7,10 @@ export enum DassanaEventTypes {
 	warning = 'warning'
 }
 
+export const emitNotificationEvent = (
+	type: DassanaEventTypes,
+	message: string,
+	emitter: Emitter
+): void => emitter.emit(type, { message })
+
 export const dassanaEmitter: Emitter = mitt()
