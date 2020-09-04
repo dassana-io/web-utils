@@ -7,6 +7,8 @@ export enum DassanaEventTypes {
 	warning = 'warning'
 }
 
+export type DassanaEmitterType = Emitter
+
 export const emitNotificationEvent = (
 	type: DassanaEventTypes,
 	message: string,
