@@ -1,9 +1,4 @@
-import mitt, {
-	EventHandlerMap,
-	EventType,
-	Handler,
-	Emitter as mittEmitter
-} from 'mitt'
+import mitt, { EventType, Handler, Emitter as mittEmitter } from 'mitt'
 
 export enum ev {
 	error = 'error',

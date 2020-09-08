@@ -44,7 +44,7 @@ describe('emitter', () => {
 		expect(mockCallback).not.toHaveBeenLastCalledWith(mockEventValueB)
 	})
 
-	it('should have an on method invokes the callback when the corresponding event is emitted', () => {
+	it('should have an on method that invokes the callback when the corresponding event is emitted', () => {
 		emitter.on(mockEvent, mockCallback)
 
 		expect(onSpy).toHaveBeenCalledWith(mockEvent, mockCallback)
