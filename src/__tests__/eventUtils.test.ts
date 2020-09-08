@@ -1,34 +1,90 @@
-import mitt from 'mitt'
-import {
-	dassanaEmitter,
-	DassanaEventTypes,
-	emitNotificationEvent
-} from '../eventUtils'
+import { Emitter, ev } from '../eventUtils'
 
-jest.mock('mitt')
+let emitter: Emitter
+let emitSpy: jest.SpyInstance
+let offSpy: jest.SpyInstance
+let onSpy: jest.SpyInstance
 
-const mockEmitter = {
-	emit: jest.fn()
-}
+const mockEventValueA = 'bar'
+const mockEventValueB = 'baz'
+const mockCallback = jest.fn()
+const mockEvent = 'foo'
 
-describe('dassanaEmitter', () => {
-	it('should return an instance of an event emitter', () => {
-		dassanaEmitter
+describe('emitter', () => {
+	beforeEach(() => {
+		emitter = new Emitter()
 
-		expect(mitt).toHaveBeenCalled()
+		emitSpy = jest.spyOn(emitter, 'emit')
+		offSpy = jest.spyOn(emitter, 'off')
+		onSpy = jest.spyOn(emitter, 'on')
 	})
-})
 
-describe('emitNotificationEvent', () => {
-	const mockMessage = 'foo'
+	afterEach(() => {
+		jest.resetAllMocks()
+	})
 
-	emitNotificationEvent(
-		DassanaEventTypes.error,
-		mockMessage,
-		mockEmitter as any
-	)
+	it('should have an emit method', () => {
+		emitter.emit(mockEvent, mockEventValueA)
 
-	expect(mockEmitter.emit).toHaveBeenCalledWith(DassanaEventTypes.error, {
-		message: mockMessage
+		expect(emitSpy).toHaveBeenCalledWith(mockEvent, mockEventValueA)
+	})
+
+	it('should have an off method that removes the listener', () => {
+		emitter.on(mockEvent, mockCallback)
+		emitter.emit(mockEvent, mockEventValueA)
+
+		expect(mockCallback).toHaveBeenCalledWith(mockEventValueA)
+
+		emitter.off(mockEvent, mockCallback)
+
+		expect(offSpy).toHaveBeenCalledWith(mockEvent, mockCallback)
+
+		emitter.emit(mockEvent, mockEventValueB)
+
+		expect(mockCallback).not.toHaveBeenLastCalledWith(mockEventValueB)
+	})
+
+	it('should have an on method that invokes the callback when the corresponding event is emitted', () => {
+		emitter.on(mockEvent, mockCallback)
+
+		expect(onSpy).toHaveBeenCalledWith(mockEvent, mockCallback)
+
+		emitter.emit(mockEvent, mockEventValueA)
+
+		expect(mockCallback).toHaveBeenCalledWith(mockEventValueA)
+	})
+
+	it('should have an emitNotficationMethod that calls the internal emit method', () => {
+		emitter.emitNotificationEvent(ev.error, mockEventValueA)
+
+		expect(emitSpy).toHaveBeenCalledWith(ev.error, {
+			message: mockEventValueA
+		})
+	})
+
+	it('should be able to clear all listeners at once', () => {
+		const anotherMockEvent = 'lorem'
+		const anotherMockCallback = jest.fn()
+
+		const emitEvents = () => {
+			emitter.emit(mockEvent, mockEventValueA)
+			emitter.emit(anotherMockEvent, mockEventValueB)
+		}
+
+		emitter.on(mockEvent, mockCallback)
+		emitter.on(anotherMockEvent, anotherMockCallback)
+
+		emitEvents()
+
+		expect(mockCallback).toHaveBeenCalledTimes(1)
+		expect(anotherMockCallback).toHaveBeenCalledTimes(1)
+
+		emitter.all.clear()
+		emitEvents()
+
+		emitter.all
+
+		expect(mockCallback).toHaveBeenCalledTimes(1)
+		expect(anotherMockCallback).toHaveBeenCalledTimes(1)
 	})
 })

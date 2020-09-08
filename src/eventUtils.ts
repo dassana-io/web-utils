@@ -1,18 +1,39 @@
-import mitt, { Emitter } from 'mitt'
+import mitt, { EventType, Handler, Emitter as mittEmitter } from 'mitt'
 
-export enum DassanaEventTypes {
+export enum ev {
 	error = 'error',
 	info = 'info',
 	success = 'success',
 	warning = 'warning'
 }
 
-export type DassanaEmitterType = Emitter
+export interface NotificationEvent {
+	message: string
+}
 
-export const emitNotificationEvent = (
-	type: DassanaEventTypes,
-	message: string,
-	emitter: Emitter
-): void => emitter.emit(type, { message })
+export class Emitter implements mittEmitter {
+	emitter: mittEmitter
 
-export const dassanaEmitter: Emitter = mitt()
+	constructor() {
+		this.emitter = mitt()
+	}
+
+	get all() {
+		return this.emitter.all
+	}
+
+	emit = (event: EventType, value: string | object): void =>
+		this.emitter.emit(event, value)
+
+	emitNotificationEvent = (type: ev, message: string): void => {
+		const event: NotificationEvent = { message }
+
+		this.emit(type, event)
+	}
+
+	off = (event: EventType, handler: Handler): void =>
+		this.emitter.off(event, handler)
+
+	on = (event: EventType, handler: Handler): void =>
+		this.emitter.on(event, handler)
+}
