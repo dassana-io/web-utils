@@ -11,7 +11,7 @@ export interface NotificationEvent {
 	message: string
 }
 
-export class Emitter {
+export class Emitter implements mittEmitter {
 	emitter: mittEmitter
 
 	constructor() {
