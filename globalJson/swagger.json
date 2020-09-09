@@ -1,0 +1,61 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Global API References",
+    "description" : "This API doc is meant to host references which can be made from any of the Dassana APIs. This API does not provide any service by itself. ",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/Dassana/Global/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  } ],
+  "paths" : { },
+  "components" : {
+    "schemas" : {
+      "ErrorInfo" : {
+        "required" : [ "key" ],
+        "type" : "object",
+        "properties" : {
+          "msg" : {
+            "type" : "string",
+            "example" : "Nothing lasts forever."
+          },
+          "key" : {
+            "maxLength" : 100,
+            "pattern" : "^[a-zA-Z0-9_.]*$",
+            "type" : "string",
+            "example" : "this_too_shall_pass"
+          }
+        }
+      },
+      "InternalError" : {
+        "type" : "object",
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ErrorInfo"
+        }, {
+          "type" : "object",
+          "properties" : {
+            "requestId" : {
+              "type" : "string",
+              "description" : "Request id as provided by the client. Please provide this id when you contact the Dassana Support.",
+              "format" : "uuid",
+              "example" : "41a15ea5-fd64-4061-b0f1-1218ba7da220"
+            }
+          }
+        } ]
+      }
+    },
+    "responses" : {
+      "Unauthenticated" : {
+        "description" : "We couldn't authenticate you",
+        "content" : {
+          "plain/text" : {
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
