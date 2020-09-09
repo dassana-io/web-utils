@@ -1,0 +1,49 @@
+name: Pull Request on Branch Push
+
+on:
+    push:
+        branches:
+            - 'swaggerhub*'
+
+jobs:
+    auto-pull-request:
+        name: PullRequestAction
+				if: ${{ github.event.head_commit.author.name == 'SwaggerHub' }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v1
+            - name: Use Node.js
+              uses: actions/setup-node@v1
+              with:
+                  always-auth: true
+                  node-version: '12.x'
+                  registry-url: https://npm.pkg.github.com/
+                  scope: '@dassana-io'
+            - name: Run install and codegen.js
+              run: |
+                  npm install
+                  npm i --save-dev @openapitools/openapi-generator-cli@latest
+                  npm run codegen
+
+                  git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
+                  git checkout --track $(git branch -r --sort=-committerdate | grep '\bswaggerhub\b' | head -n 1)
+
+                  git config --global user.name "github-actions"
+                  git config --global user.email "github-actions@users.noreply.github.com"
+
+                  git add .
+                  git commit -m 'Automated swagger codegen'
+
+                  git push
+              env:
+                  CI: true
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+            - name: Open Pull Request
+              uses: vsoch/pull-request-action@1.0.6
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  BRANCH_PREFIX: 'swaggerhub'
+                  PULL_REQUEST_BRANCH: 'dev'

@@ -1,0 +1,6 @@
+{
+	"supportsES6": true,
+	"modelPropertyNaming": "original",
+	"typescriptThreePlus": true,
+	"withInterfaces": true
+}
