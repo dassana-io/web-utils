@@ -1,11 +1,11 @@
 import axiosRetry from 'axios-retry'
-import { DassanaError } from '../api'
 import { ev } from '../eventUtils'
 import { initializeLocalStorageMock } from '../testUtils'
 import { omit } from 'lodash'
 import {
 	api,
 	DASSANA_REQUEST_ID,
+	DassanaError,
 	generatePatch,
 	handleAjaxErrors,
 	TOKEN
