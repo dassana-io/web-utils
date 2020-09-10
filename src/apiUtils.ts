@@ -4,7 +4,7 @@ import jsonmergepatch from 'json-merge-patch'
 import omit from 'lodash/omit'
 import { v4 as uuidv4 } from 'uuid'
 import axios, { AxiosInstance } from 'axios'
-import { Emitter, ev } from 'eventUtils'
+import { Emitter, ev } from './eventUtils'
 
 export const DASSANA_REQUEST_ID = 'x-dassana-request-id'
 export const TOKEN = 'token'
