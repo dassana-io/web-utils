@@ -39,7 +39,9 @@
 	"module": "lib/index.esm.js",
 	"types": "lib/types",
 	"jest": {
-		"coveragePathIgnorePatterns": []
+		"coveragePathIgnorePatterns": [
+			"src/api/*/"
+		]
 	},
 	"browserslist": {
 		"production": [
