@@ -2,22 +2,30 @@ import axiosRetry from 'axios-retry'
 import jsonmergepatch from 'json-merge-patch'
 import omit from 'lodash/omit'
 import { v4 as uuidv4 } from 'uuid'
-import axios, { AxiosError, AxiosInstance } from 'axios'
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
 import { Emitter, ev } from './eventUtils'
 import { ErrorInfo, InternalError } from 'api'
 
 export const DASSANA_REQUEST_ID = 'x-dassana-request-id'
 export const TOKEN = 'token'
 
-type DassanaError = ErrorInfo | InternalError
+export type DassanaError = ErrorInfo | InternalError
+export type DassanaAxiosInstance = AxiosInstance
 
-export const api: () => AxiosInstance = () => {
-	const apiClient = axios.create({
+export const api: (apiUrl?: string) => AxiosInstance = (apiUrl = '') => {
+	const axiosRequestConfig: AxiosRequestConfig = {
 		headers: {
 			Authorization: `Bearer ${localStorage.getItem(TOKEN)}`,
 			[DASSANA_REQUEST_ID]: uuidv4()
 		}
-	})
+	}
+
+	if (apiUrl) {
+		axiosRequestConfig.baseURL = apiUrl
+	}
+
+	const apiClient = axios.create(axiosRequestConfig)
+
 	axiosRetry(apiClient)
 
 	return apiClient
