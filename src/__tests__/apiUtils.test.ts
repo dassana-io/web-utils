@@ -125,10 +125,15 @@ describe('handleAjaxErrors', () => {
 
 	it('should emit an error notification with the message if it exists', () => {
 		const mockErrorResponse = {
-			key: mockKey,
-			msg: mockMsg
+			response: {
+				data: {
+					key: mockKey,
+					msg: mockMsg
+				}
+			}
 		}
 
+		//@ts-ignore
 		handleAjaxErrors(mockErrorResponse, mockEmitter)
 
 		expect(mockEmitter.emitNotificationEvent).toHaveBeenCalledWith(
@@ -139,9 +144,14 @@ describe('handleAjaxErrors', () => {
 
 	it('should emit an error notification with the key if there is no message', () => {
 		const mockErrorResponse = {
-			key: mockKey
+			response: {
+				data: {
+					key: mockKey
+				}
+			}
 		}
 
+		//@ts-ignore
 		handleAjaxErrors(mockErrorResponse, mockEmitter)
 
 		expect(mockEmitter.emitNotificationEvent).toHaveBeenCalledWith(

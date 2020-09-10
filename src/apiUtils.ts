@@ -1,13 +1,15 @@
 import axiosRetry from 'axios-retry'
-import { ErrorInfo } from 'api'
 import jsonmergepatch from 'json-merge-patch'
 import omit from 'lodash/omit'
 import { v4 as uuidv4 } from 'uuid'
-import axios, { AxiosInstance } from 'axios'
+import axios, { AxiosError, AxiosInstance } from 'axios'
 import { Emitter, ev } from './eventUtils'
+import { ErrorInfo, InternalError } from 'api'
 
 export const DASSANA_REQUEST_ID = 'x-dassana-request-id'
 export const TOKEN = 'token'
+
+type DassanaError = ErrorInfo | InternalError
 
 export const api: () => AxiosInstance = () => {
 	const apiClient = axios.create({
@@ -22,9 +24,15 @@ export const api: () => AxiosInstance = () => {
 }
 
 export const handleAjaxErrors = (
-	{ key, msg }: ErrorInfo,
+	{ response }: AxiosError<DassanaError>,
 	emitter: Emitter
-): void => emitter.emitNotificationEvent(ev.error, msg ? msg : key)
+): void => {
+	if (response) {
+		const { key, msg } = response.data
+
+		return emitter.emitNotificationEvent(ev.error, msg ? msg : key)
+	}
+}
 
 interface PatchInfo<T, U> {
 	fieldValues: U
