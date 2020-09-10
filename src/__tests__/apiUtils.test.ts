@@ -5,6 +5,7 @@ import { omit } from 'lodash'
 import {
 	api,
 	DASSANA_REQUEST_ID,
+	DassanaError,
 	generatePatch,
 	handleAjaxErrors,
 	TOKEN
@@ -25,9 +26,16 @@ jest.mock('uuid', () => ({
 	v4: () => 'abc'
 }))
 
+const mockBaseUrl = 'baseUrl'
 const mockEndpoint = 'endpoint'
 const mockRequestData = { bar: 'baz' }
 const mockToken = 'fakeToken'
+
+interface MockErrorResponse {
+	response: {
+		data: DassanaError
+	}
+}
 
 initializeLocalStorageMock()
 
@@ -38,11 +46,35 @@ describe('api', () => {
 			Promise.resolve({ data: { foo: 'bar' } })
 		)
 
-		await api().get(mockEndpoint)
+		await api(mockBaseUrl).get(mockEndpoint)
 	})
 
 	afterEach(() => {
 		jest.clearAllMocks()
+	})
+
+	it('should call axios.create with a baseURL if one is provided', () => {
+		expect(mockedAxios.create).toHaveBeenCalledWith(
+			expect.objectContaining({
+				baseURL: mockBaseUrl
+			})
+		)
+	})
+
+	it('should call axios.create without a baseURL by default', async () => {
+		jest.clearAllMocks()
+
+		mockedAxios.get.mockImplementationOnce(() =>
+			Promise.resolve({ data: { foo: 'bar' } })
+		)
+
+		await api().get(mockEndpoint)
+
+		expect(mockedAxios.create).not.toHaveBeenCalledWith(
+			expect.objectContaining({
+				baseURL: expect.anything()
+			})
+		)
 	})
 
 	it('should call axios.create with the correct headers', () => {
@@ -124,11 +156,16 @@ describe('handleAjaxErrors', () => {
 	})
 
 	it('should emit an error notification with the message if it exists', () => {
-		const mockErrorResponse = {
-			key: mockKey,
-			msg: mockMsg
+		const mockErrorResponse: MockErrorResponse = {
+			response: {
+				data: {
+					key: mockKey,
+					msg: mockMsg
+				}
+			}
 		}
 
+		//@ts-ignore
 		handleAjaxErrors(mockErrorResponse, mockEmitter)
 
 		expect(mockEmitter.emitNotificationEvent).toHaveBeenCalledWith(
@@ -138,16 +175,28 @@ describe('handleAjaxErrors', () => {
 	})
 
 	it('should emit an error notification with the key if there is no message', () => {
-		const mockErrorResponse = {
-			key: mockKey
+		const mockErrorResponse: MockErrorResponse = {
+			response: {
+				data: {
+					key: mockKey
+				}
+			}
 		}
 
+		//@ts-ignore
 		handleAjaxErrors(mockErrorResponse, mockEmitter)
 
 		expect(mockEmitter.emitNotificationEvent).toHaveBeenCalledWith(
 			ev.error,
 			mockKey
 		)
+	})
+
+	it('should not emit a notification event if the response is empty', () => {
+		//@ts-ignore
+		handleAjaxErrors({}, mockEmitter)
+
+		expect(mockEmitter.emitNotificationEvent).not.toHaveBeenCalled()
 	})
 })
 
