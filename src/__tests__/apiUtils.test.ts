@@ -1,7 +1,14 @@
 import axiosRetry from 'axios-retry'
+import { ev } from '../eventUtils'
 import { initializeLocalStorageMock } from '../testUtils'
 import { omit } from 'lodash'
-import { api, DASSANA_REQUEST_ID, generatePatch, TOKEN } from '../apiUtils'
+import {
+	api,
+	DASSANA_REQUEST_ID,
+	generatePatch,
+	handleAjaxErrors,
+	TOKEN
+} from '../apiUtils'
 import axios, { AxiosStatic } from 'axios'
 
 jest.mock('axios', () => {
@@ -102,6 +109,45 @@ describe('api', () => {
 				mockRequestData
 			)
 		})
+	})
+})
+
+describe('handleAjaxErrors', () => {
+	const mockEmitter = {
+		emitNotificationEvent: jest.fn()
+	}
+	const mockKey = 'foo'
+	const mockMsg = 'bar'
+
+	afterEach(() => {
+		jest.clearAllMocks()
+	})
+
+	it('should emit an error notification with the message if it exists', () => {
+		const mockErrorResponse = {
+			key: mockKey,
+			msg: mockMsg
+		}
+
+		handleAjaxErrors(mockErrorResponse, mockEmitter)
+
+		expect(mockEmitter.emitNotificationEvent).toHaveBeenCalledWith(
+			ev.error,
+			mockMsg
+		)
+	})
+
+	it('should emit an error notification with the key if there is no message', () => {
+		const mockErrorResponse = {
+			key: mockKey
+		}
+
+		handleAjaxErrors(mockErrorResponse, mockEmitter)
+
+		expect(mockEmitter.emitNotificationEvent).toHaveBeenCalledWith(
+			ev.error,
+			mockKey
+		)
 	})
 })
 

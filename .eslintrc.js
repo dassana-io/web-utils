@@ -10,6 +10,7 @@ module.exports = {
 		module: true,
 		window: true
 	},
+	ignorePatterns: ['src/api/*/'],
 	parser: '@typescript-eslint/parser', // Specifies the ESLint parser
 	parserOptions: {
 		ecmaFeatures: {
