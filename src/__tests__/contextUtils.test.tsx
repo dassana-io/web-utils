@@ -29,16 +29,20 @@ describe('createCtx', () => {
 	})
 
 	it('uses custom hook if initial values are provided', () => {
+		const mockFn = jest.fn()
+		const mockVal = 'bar'
+
 		wrapper = getWrapperComponent({
-			foo: 'bar',
-			getBar: bar => bar
+			foo: mockVal,
+			getBar: mockFn
 		})
 
 		const { result } = renderHook(() => useFooCtx(), { wrapper })
 
-		expect(result.current.foo).toBe('bar')
-
+		expect(result.current.foo).toBe(mockVal)
 		expect(typeof result.current.getBar).toBe('function')
-		expect(result.current.getBar('bar')).toBe('bar')
+
+		result.current.getBar(mockVal)
+		expect(mockFn).toHaveBeenCalledWith(mockVal)
 	})
 })
