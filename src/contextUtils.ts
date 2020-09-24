@@ -13,10 +13,12 @@ export const createCtx = <ContextType>() => {
 	const ctx = createContext<ContextType | undefined>(undefined)
 
 	const useCtx = () => {
-		const c = useContext(ctx)
+		const context = useContext(ctx)
 
-		if (!c) throw new Error('useCtx must be inside a Provider with a value')
-		return c
+		if (!context)
+			throw new Error('useCtx must be inside a Provider with a value')
+
+		return context
 	}
 
 	return [useCtx, ctx.Provider] as const

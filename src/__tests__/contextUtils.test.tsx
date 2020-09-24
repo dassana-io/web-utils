@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react'
 
 interface FooCtxType {
 	foo: string
-	onFoo: (value: boolean) => void
+	getBar: (value: string) => string
 }
 
 interface TestProviderProps {
@@ -31,12 +31,14 @@ describe('createCtx', () => {
 	it('uses custom hook if initial values are provided', () => {
 		wrapper = getWrapperComponent({
 			foo: 'bar',
-			onFoo: foo => console.log(foo)
+			getBar: bar => bar
 		})
 
 		const { result } = renderHook(() => useFooCtx(), { wrapper })
 
 		expect(result.current.foo).toBe('bar')
-		expect(typeof result.current.onFoo).toBe('function')
+
+		expect(typeof result.current.getBar).toBe('function')
+		expect(result.current.getBar('bar')).toBe('bar')
 	})
 })
