@@ -7,6 +7,10 @@ export enum ev {
 	warning = 'warning'
 }
 
+export enum EmitterEventTypes {
+	profileUpdated = 'profileUpdated'
+}
+
 export interface NotificationEvent {
 	message: string
 }
