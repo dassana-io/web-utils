@@ -5,7 +5,7 @@ import { omit } from 'lodash'
 import {
 	api,
 	DASSANA_REQUEST_ID,
-	DassanaError,
+	ErrorTypes,
 	generatePatch,
 	handleAjaxErrors,
 	TOKEN
@@ -33,7 +33,7 @@ const mockToken = 'fakeToken'
 
 interface MockErrorResponse {
 	response: {
-		data: DassanaError
+		data: ErrorTypes
 	}
 }
 
