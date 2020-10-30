@@ -2,7 +2,7 @@ import { act } from 'react-dom/test-utils'
 import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 import { mount, ReactWrapper } from 'enzyme'
-import { usePrevious, useShortcut } from '../hookUtils'
+import { usePrevious, useShortcut, UseShortcutConfig } from '../hookUtils'
 
 describe('usePrevious', () => {
 	const initialProps = { state: 'foo' }
@@ -38,8 +38,14 @@ describe('useShortcut', () => {
 	jest.spyOn(window, 'addEventListener')
 	jest.spyOn(window, 'removeEventListener')
 
+	const options: UseShortcutConfig = {
+		callback: onKeyEventCbSpy,
+		key: 'Escape',
+		keyEvent: 'keydown'
+	}
+
 	const MockComponent = () => {
-		useShortcut('keydown', 'Escape', onKeyEventCbSpy)
+		useShortcut(options)
 
 		return <div />
 	}
@@ -89,6 +95,21 @@ describe('useShortcut', () => {
 				})
 			)
 		})
+
+		expect(onKeyEventCbSpy).not.toHaveBeenCalled()
+	})
+
+	it('should not invoke the key event callback function if the additional condition is not met', () => {
+		const MockComponent = () => {
+			useShortcut({
+				...options,
+				additionalConditionalFn: () => false
+			})
+
+			return <div />
+		}
+
+		wrapper = mount(<MockComponent />)
 
 		expect(onKeyEventCbSpy).not.toHaveBeenCalled()
 	})

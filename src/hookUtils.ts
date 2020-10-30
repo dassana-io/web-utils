@@ -12,18 +12,26 @@ export const usePrevious = <T>(state: T): T | undefined => {
 
 type KeyboardEventTypes = 'keydown' | 'keyup'
 
-export const useShortcut = (
-	keyEvent: KeyboardEventTypes,
-	key: KeyboardEvent['key'],
+interface UseShortcutConfig {
+	additionalConditionalFn?: () => boolean
 	callback: () => void
-) => {
+	key: KeyboardEvent['key']
+	keyEvent: KeyboardEventTypes
+}
+
+export const useShortcut = ({
+	additionalConditionalFn = () => true,
+	callback,
+	key,
+	keyEvent
+}: UseShortcutConfig) => {
 	const onKeyEvent = useCallback(
 		(event: KeyboardEvent) => {
-			if (event.key === key) {
+			if (event.key === key && additionalConditionalFn()) {
 				callback()
 			}
 		},
-		[callback, key]
+		[additionalConditionalFn, callback, key]
 	)
 
 	useEffect(() => {
