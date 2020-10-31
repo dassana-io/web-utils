@@ -1,3 +1,4 @@
+import { add } from 'lodash'
 import { useCallback, useEffect, useRef } from 'react'
 
 export const usePrevious = <T>(state: T): T | undefined => {
@@ -12,7 +13,7 @@ export const usePrevious = <T>(state: T): T | undefined => {
 
 type KeyboardEventTypes = 'keydown' | 'keyup'
 
-interface UseShortcutConfig {
+export interface UseShortcutConfig {
 	additionalConditionalFn?: () => boolean
 	callback: () => void
 	key: KeyboardEvent['key']

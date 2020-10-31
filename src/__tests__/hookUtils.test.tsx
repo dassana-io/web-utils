@@ -76,7 +76,7 @@ describe('useShortcut', () => {
 
 	it('should invoke the key event callback function if the correct key is pressed', () => {
 		act(() => {
-			window.dispatchEvent(
+			dispatchEvent(
 				new KeyboardEvent('keydown', {
 					code: 'Escape',
 					key: 'Escape'
@@ -100,10 +100,13 @@ describe('useShortcut', () => {
 	})
 
 	it('should not invoke the key event callback function if the additional condition is not met', () => {
+		const mockFn = jest.fn()
+
 		const MockComponent = () => {
 			useShortcut({
 				...options,
-				additionalConditionalFn: () => false
+				additionalConditionalFn: () => false,
+				callback: mockFn
 			})
 
 			return <div />
@@ -111,6 +114,17 @@ describe('useShortcut', () => {
 
 		wrapper = mount(<MockComponent />)
 
-		expect(onKeyEventCbSpy).not.toHaveBeenCalled()
+		wrapper.update()
+
+		act(() => {
+			dispatchEvent(
+				new KeyboardEvent('keydown', {
+					code: 'Escape',
+					key: 'Escape'
+				})
+			)
+		})
+
+		expect(mockFn).not.toHaveBeenCalled()
 	})
 })
