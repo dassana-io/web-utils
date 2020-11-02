@@ -1,16 +1,16 @@
 import { Emitter, ev } from '../eventUtils'
 
-let emitter: Emitter
-let emitSpy: jest.SpyInstance
-let offSpy: jest.SpyInstance
-let onSpy: jest.SpyInstance
-
-const mockEventValueA = 'bar'
-const mockEventValueB = 'baz'
-const mockCallback = jest.fn()
-const mockEvent = 'foo'
-
 describe('emitter', () => {
+	let emitter: Emitter
+	let emitSpy: jest.SpyInstance
+	let offSpy: jest.SpyInstance
+	let onSpy: jest.SpyInstance
+
+	const mockEventValueA = 'bar'
+	const mockEventValueB = 'baz'
+	const mockCallback = jest.fn()
+	const mockEvent = 'foo'
+
 	beforeEach(() => {
 		emitter = new Emitter()
 
@@ -20,7 +20,7 @@ describe('emitter', () => {
 	})
 
 	afterEach(() => {
-		jest.resetAllMocks()
+		jest.clearAllMocks()
 	})
 
 	it('should have an emit method', () => {

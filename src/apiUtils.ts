@@ -9,8 +9,8 @@ import { ErrorInfo, InternalError } from 'api'
 export const DASSANA_REQUEST_ID = 'x-dassana-request-id'
 export const TOKEN = 'token'
 
-export type DassanaError = ErrorInfo | InternalError
-export type DassanaAxiosInstance = AxiosInstance
+export type ErrorTypes = ErrorInfo | InternalError
+export type { AxiosInstance } from 'axios'
 
 export const api: (apiUrl?: string) => AxiosInstance = (apiUrl = '') => {
 	const axiosRequestConfig: AxiosRequestConfig = {
@@ -32,7 +32,7 @@ export const api: (apiUrl?: string) => AxiosInstance = (apiUrl = '') => {
 }
 
 export const handleAjaxErrors = (
-	{ response }: AxiosError<DassanaError>,
+	{ response }: AxiosError<ErrorTypes>,
 	emitter: Emitter
 ): void => {
 	if (response) {
