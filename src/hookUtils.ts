@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { Emitter, EmitterEventTypes } from 'eventUtils'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 export const usePrevious = <T>(state: T): T | undefined => {
 	const ref = useRef<T>()
@@ -39,4 +40,39 @@ export const useShortcut = ({
 
 		return () => window.removeEventListener(keyEvent, onKeyEvent)
 	}, [keyEvent, onKeyEvent])
+}
+
+export enum ThemeType {
+	dark = 'dark',
+	light = 'light'
+}
+
+export const useTheme = (emitter: Emitter) => {
+	const [theme, setTheme] = useState<ThemeType>(ThemeType.dark)
+
+	const getLocalStorageTheme = () =>
+		(localStorage.getItem('theme') as ThemeType) || ThemeType.dark
+
+	const onStorageUpdate = useCallback(() => {
+		const themeInStorage = getLocalStorageTheme()
+
+		if (themeInStorage !== theme) {
+			setTheme(themeInStorage)
+		}
+	}, [theme])
+
+	useEffect(() => {
+		const theme = getLocalStorageTheme()
+
+		setTheme(theme)
+	}, [])
+
+	useEffect(() => {
+		emitter.on(EmitterEventTypes.themeUpdated, onStorageUpdate)
+
+		return () =>
+			emitter.off(EmitterEventTypes.themeUpdated, onStorageUpdate)
+	}, [emitter, onStorageUpdate])
+
+	return theme
 }

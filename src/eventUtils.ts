@@ -9,7 +9,8 @@ export enum ev {
 
 export enum EmitterEventTypes {
 	logout = 'logout',
-	profileUpdated = 'profileUpdated'
+	profileUpdated = 'profileUpdated',
+	themeUpdated = 'themeUpdated'
 }
 
 export interface NotificationEvent {
