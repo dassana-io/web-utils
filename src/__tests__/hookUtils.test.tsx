@@ -1,8 +1,17 @@
-import { act } from 'react-dom/test-utils'
+import { initializeLocalStorageMock } from '../testUtils'
 import React from 'react'
-import { renderHook } from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { Emitter, EmitterEventTypes } from '../eventUtils'
 import { mount, ReactWrapper } from 'enzyme'
-import { usePrevious, useShortcut, UseShortcutConfig } from '../hookUtils'
+import {
+	ThemeType,
+	usePrevious,
+	useShortcut,
+	UseShortcutConfig,
+	useTheme
+} from '../hookUtils'
+
+initializeLocalStorageMock()
 
 describe('usePrevious', () => {
 	const initialProps = { state: 'foo' }
@@ -126,5 +135,69 @@ describe('useShortcut', () => {
 		})
 
 		expect(mockFn).not.toHaveBeenCalled()
+	})
+})
+
+describe('useTheme', () => {
+	const emitter = new Emitter()
+
+	const offSpy = jest.spyOn(emitter, 'off')
+	const onSpy = jest.spyOn(emitter, 'on')
+
+	const initializeHook = () => renderHook(() => useTheme(emitter))
+
+	beforeEach(() => {
+		jest.clearAllMocks()
+	})
+
+	it('should return dark theme if there is no theme in localStorage', () => {
+		const { result } = initializeHook()
+
+		expect(result.current).toBe(ThemeType.dark)
+	})
+
+	it('should add emitter listener on mount and remove it on unmount', () => {
+		const { unmount } = initializeHook()
+
+		expect(onSpy).toHaveBeenCalledWith(
+			EmitterEventTypes.themeUpdated,
+			expect.any(Function)
+		)
+
+		unmount()
+
+		expect(offSpy).toHaveBeenCalledWith(
+			EmitterEventTypes.themeUpdated,
+			expect.any(Function)
+		)
+	})
+
+	it('should update the theme when the appropriate event is emitted', () => {
+		localStorage.setItem('theme', ThemeType.light)
+
+		const { result } = initializeHook()
+
+		expect(result.current).toBe(ThemeType.light)
+
+		act(() => {
+			localStorage.setItem('theme', ThemeType.dark)
+			emitter.emit(EmitterEventTypes.themeUpdated, ThemeType.dark)
+		})
+
+		expect(result.current).toBe(ThemeType.dark)
+	})
+
+	it('should not update the theme if the theme in local storage is the same as the one in state', () => {
+		localStorage.setItem('theme', ThemeType.light)
+
+		const { result } = initializeHook()
+
+		expect(result.current).toBe(ThemeType.light)
+
+		act(() => {
+			emitter.emit(EmitterEventTypes.themeUpdated, ThemeType.light)
+		})
+
+		expect(result.current).toBe(ThemeType.light)
 	})
 })
