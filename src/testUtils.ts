@@ -31,3 +31,23 @@ export const initializeLocalStorageMock = () => {
 		writable: true
 	})
 }
+
+const mockEmit = jest.fn()
+const mockEmitNotificationEvent = jest.fn()
+const mockEmitterOff = jest.fn()
+const mockEmitterOn = jest.fn()
+
+const mockEmitter = {
+	emit: mockEmit,
+	emitNotificationEvent: mockEmitNotificationEvent,
+	off: mockEmitterOff,
+	on: mockEmitterOn
+} as jest.Mocked<any>
+
+export {
+	mockEmit,
+	mockEmitNotificationEvent,
+	mockEmitterOff,
+	mockEmitterOn,
+	mockEmitter
+}
