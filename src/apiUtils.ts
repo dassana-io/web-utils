@@ -10,7 +10,7 @@ export const DASSANA_REQUEST_ID = 'x-dassana-request-id'
 export const TOKEN = 'token'
 
 export type ErrorTypes = ErrorInfo | InternalError
-export type { AxiosInstance } from 'axios'
+export type { AxiosInstance, AxiosRequestConfig } from 'axios'
 
 export const api: (apiUrl?: string) => AxiosInstance = (apiUrl = '') => {
 	const axiosRequestConfig: AxiosRequestConfig = {
