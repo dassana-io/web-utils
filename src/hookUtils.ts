@@ -1,5 +1,11 @@
 import { Emitter, EmitterEventTypes } from 'eventUtils'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+	useCallback,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState
+} from 'react'
 
 export const usePrevious = <T>(state: T): T | undefined => {
 	const ref = useRef<T>()
@@ -61,7 +67,7 @@ export const useTheme = (emitter: Emitter) => {
 		}
 	}, [theme])
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const theme = getLocalStorageTheme()
 
 		setTheme(theme)
