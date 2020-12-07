@@ -8,7 +8,7 @@
 		"url": "ssh://git@github.com:dassana-io/web-utils",
 		"directory": "@dassana-io/web-utils"
 	},
-	"version": "0.7.3",
+	"version": "0.7.4",
 	"dependencies": {
 		"@testing-library/react-hooks": "^3.4.1",
 		"@types/jest": "^24.9.1",
