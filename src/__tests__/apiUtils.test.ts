@@ -1,7 +1,6 @@
 import axiosRetry from 'axios-retry'
 import { ev } from '../eventUtils'
 import { initializeLocalStorageMock } from '../testUtils'
-import { omit } from 'lodash'
 import {
 	api,
 	DASSANA_REQUEST_ID,
@@ -223,29 +222,18 @@ describe('generatePatch', () => {
 	it('should return a patch object when values are changed', () => {
 		const generatedPatch = generatePatch<MockUser, MockUserInfo>({
 			fieldValues: mockFieldValues,
-			initialValues: mockInitialValues,
-			keysToOmitFromPatch: 'id'
+			initialValues: mockInitialValues
 		})
 
 		expect(generatedPatch).toEqual({ firstName: 'Foo' })
 	})
 
 	it('should return an empty object if no changes are detected', () => {
-		const generatedPatch = generatePatch<MockUser, MockUserInfo>({
-			fieldValues: omit(mockInitialValues, 'id'),
-			initialValues: mockInitialValues,
-			keysToOmitFromPatch: 'id'
-		})
-
-		expect(generatedPatch).toEqual({})
-	})
-
-	it('use initial values as is if there are no keys to be omitted', () => {
-		const generatedPatch = generatePatch<MockUser, MockUserInfo>({
-			fieldValues: mockFieldValues,
+		const generatedPatch = generatePatch<MockUser, MockUser>({
+			fieldValues: mockInitialValues,
 			initialValues: mockInitialValues
 		})
 
-		expect(generatedPatch).toEqual({ firstName: 'Foo', id: null })
+		expect(generatedPatch).toEqual({})
 	})
 })

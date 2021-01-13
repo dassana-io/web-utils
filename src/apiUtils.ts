@@ -1,6 +1,6 @@
 import axiosRetry from 'axios-retry'
 import jsonmergepatch from 'json-merge-patch'
-import omit from 'lodash/omit'
+import pick from 'lodash/pick'
 import { v4 as uuidv4 } from 'uuid'
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
 import { Emitter, ev } from './eventUtils'
@@ -45,15 +45,13 @@ export const handleAjaxErrors = (
 interface PatchInfo<T, U> {
 	fieldValues: U
 	initialValues: T
-	keysToOmitFromPatch?: string | string[]
 }
 
 export const generatePatch = <T extends {}, U>({
 	initialValues,
-	fieldValues,
-	keysToOmitFromPatch = []
+	fieldValues
 }: PatchInfo<T, U>): U =>
 	(jsonmergepatch.generate(
-		omit(initialValues, keysToOmitFromPatch),
+		pick(initialValues, Object.keys(fieldValues)),
 		fieldValues
 	) || {}) as U
