@@ -54,10 +54,9 @@ export enum ThemeType {
 }
 
 export const useTheme = (emitter: Emitter) => {
-	const [theme, setTheme] = useState<ThemeType>(ThemeType.dark)
-
 	const getLocalStorageTheme = () =>
 		(localStorage.getItem('theme') as ThemeType) || ThemeType.dark
+	const [theme, setTheme] = useState<ThemeType>(getLocalStorageTheme())
 
 	const onStorageUpdate = useCallback(() => {
 		const themeInStorage = getLocalStorageTheme()
