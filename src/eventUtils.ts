@@ -10,6 +10,7 @@ export enum ev {
 export enum EmitterEventTypes {
 	loggedOut = 'loggedOut',
 	logout = 'logout',
+	offsetProfileIcon = 'offsetProfileIcon',
 	profileUpdated = 'profileUpdated',
 	themeUpdated = 'themeUpdated'
 }
