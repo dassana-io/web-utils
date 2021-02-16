@@ -25,7 +25,6 @@ type KeyboardEventTypes = 'keydown' | 'keyup'
 interface CommonUseShorcutConfig {
 	additionalConditionalFn?: () => boolean
 	callback: () => void
-	continuous?: boolean
 }
 
 export interface MultipleKeysUseShorcut extends CommonUseShorcutConfig {
@@ -46,7 +45,6 @@ interface PressedKeysMap {
 export const useShortcut = ({
 	additionalConditionalFn = () => true,
 	callback,
-	continuous = false,
 	...rest
 }: UseShortcutConfig) => {
 	// for multiple keys only. this keeps track of which keys are currently being pressed.
@@ -59,7 +57,7 @@ export const useShortcut = ({
 
 			const onKeyEvent = (event: KeyboardEvent) => {
 				// This prevents callback from being called if a key is pressed continuosly without lifting finger
-				if (event.repeat && !continuous) return
+				if (event.repeat) return
 
 				if (event.key === key && additionalConditionalFn()) {
 					callback()
@@ -74,7 +72,7 @@ export const useShortcut = ({
 			const { keys = [] } = rest
 
 			const onKeyDown = (event: KeyboardEvent) => {
-				if (event.repeat && !continuous) return
+				if (event.repeat) return
 
 				let currPressedKey = ''
 				let allKeysPressed = false
@@ -117,7 +115,7 @@ export const useShortcut = ({
 				window.removeEventListener('keyup', onKeyUp)
 			}
 		}
-	}, [additionalConditionalFn, callback, continuous, pressedKeysMap, rest])
+	}, [additionalConditionalFn, callback, pressedKeysMap, rest])
 }
 
 // -----------------------------------
