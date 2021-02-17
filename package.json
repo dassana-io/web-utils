@@ -43,7 +43,8 @@
 	"types": "lib/types",
 	"jest": {
 		"coveragePathIgnorePatterns": [
-			"src/api/*/"
+			"src/api/*/",
+			"src/constants.ts"
 		]
 	},
 	"browserslist": {

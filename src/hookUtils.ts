@@ -1,4 +1,3 @@
-import omit from 'lodash/omit'
 import { Emitter, EmitterEventTypes } from 'eventUtils'
 import {
 	useCallback,
@@ -19,16 +18,17 @@ export const usePrevious = <T>(state: T): T | undefined => {
 }
 
 // -----------------------------------
-
 type KeyboardEventTypes = 'keydown' | 'keyup'
 
 interface CommonUseShorcutConfig {
 	additionalConditionalFn?: () => boolean
 	callback: () => void
+	preventDefault?: boolean
 }
 
 export interface MultipleKeysUseShorcut extends CommonUseShorcutConfig {
-	keys: [KeyboardEvent['key'], ...KeyboardEvent['key'][]]
+	// For now keys can only inlcude two keys. If adding more than two keys, read this first https://stackoverflow.com/questions/27380018/when-cmd-key-is-kept-pressed-keyup-is-not-triggered-for-any-other-key/27512489#27512489
+	keys: [KeyboardEvent['key'], KeyboardEvent['key']]
 }
 
 export interface SingleKeyUseShorcut extends CommonUseShorcutConfig {
@@ -38,17 +38,13 @@ export interface SingleKeyUseShorcut extends CommonUseShorcutConfig {
 
 export type UseShortcutConfig = SingleKeyUseShorcut | MultipleKeysUseShorcut
 
-interface PressedKeysMap {
-	[key: string]: boolean | undefined
-}
-
 export const useShortcut = ({
 	additionalConditionalFn = () => true,
 	callback,
+	preventDefault = false,
 	...rest
 }: UseShortcutConfig) => {
-	// for multiple keys only. this keeps track of which keys are currently being pressed.
-	const [pressedKeysMap, setPressedKeysMap] = useState<PressedKeysMap>({})
+	const [isFirstKeyPressed, setIsFirstKeyPressed] = useState(false)
 
 	useEffect(() => {
 		// If shortcut uses single key, a keyEvent is provided - use onKeyEvent and attach it to window
@@ -61,6 +57,8 @@ export const useShortcut = ({
 
 				if (event.key === key && additionalConditionalFn()) {
 					callback()
+
+					if (preventDefault) event.preventDefault()
 				}
 			}
 
@@ -69,42 +67,25 @@ export const useShortcut = ({
 			return () => window.removeEventListener(keyEvent, onKeyEvent)
 			// Otherwise shortcut uses multiple keys. We need to use both onKeyDown and onKeyUp to know which keys have been pressed
 		} else {
-			const { keys = [] } = rest
+			const [firstKey, secondKey] = rest.keys
 
 			const onKeyDown = (event: KeyboardEvent) => {
 				if (event.repeat) return
 
-				let currPressedKey = ''
-				let allKeysPressed = false
-
-				const clonedPressedKeysMap = { ...pressedKeysMap }
-
-				// Check if pressed key matches any of the ones from list provided
-				if (keys.find(key => key === event.key)) {
-					clonedPressedKeysMap[event.key] = true
-
-					currPressedKey = event.key
-				}
-
-				// If all the keys are being pressed, set allKeysPressed to true
-				if (keys.every(key => clonedPressedKeysMap[key]))
-					allKeysPressed = true
-
-				// If all keys are pressed and conditions are met, call the callback
-				// and set the last pressed key to false
-				if (allKeysPressed && additionalConditionalFn()) {
+				if (event.key === firstKey) setIsFirstKeyPressed(true)
+				else if (
+					isFirstKeyPressed &&
+					event.key === secondKey &&
+					additionalConditionalFn()
+				) {
 					callback()
-					// This is needed for modifier keys. More info: https://en.wikipedia.org/wiki/Rollover_(key)
-					if (currPressedKey)
-						clonedPressedKeysMap[currPressedKey] = false
-				}
 
-				setPressedKeysMap(clonedPressedKeysMap)
+					if (preventDefault) event.preventDefault()
+				}
 			}
 
 			const onKeyUp = (event: KeyboardEvent) => {
-				if (keys.find(key => key === event.key))
-					setPressedKeysMap(prev => omit(prev, event.key))
+				if (firstKey === event.key) setIsFirstKeyPressed(false)
 			}
 
 			window.addEventListener('keydown', onKeyDown)
@@ -115,7 +96,13 @@ export const useShortcut = ({
 				window.removeEventListener('keyup', onKeyUp)
 			}
 		}
-	}, [additionalConditionalFn, callback, pressedKeysMap, rest])
+	}, [
+		additionalConditionalFn,
+		callback,
+		isFirstKeyPressed,
+		preventDefault,
+		rest
+	])
 }
 
 // -----------------------------------
