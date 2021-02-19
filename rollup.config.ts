@@ -2,10 +2,21 @@ import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import pkg from './package.json'
 import resolve from '@rollup/plugin-node-resolve'
+import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-typescript2'
 
 export default {
-	external: ['react', 'react-dom'],
+	external: [
+		'axios',
+		'axios-retry',
+		'json-merge-patch',
+		'lodash',
+		'mitt',
+		'moment-timezone',
+		'react',
+		'react-dom',
+		'uuid'
+	],
 	input: 'src/index.ts',
 	output: [
 		{
@@ -23,6 +34,7 @@ export default {
 		json(), // For moment-timezone
 		typescript({
 			useTsconfigDeclarationDir: true
-		})
+		}),
+		terser()
 	]
 }
