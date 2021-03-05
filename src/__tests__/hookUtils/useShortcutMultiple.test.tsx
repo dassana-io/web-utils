@@ -1,6 +1,6 @@
+import { act } from '@testing-library/react-hooks'
 import { fireEvent } from '@testing-library/react'
 import React from 'react'
-import { act } from '@testing-library/react-hooks'
 import { mount, ReactWrapper } from 'enzyme'
 import { useShortcut, UseShortcutConfig } from '../../hookUtils'
 

@@ -1,5 +1,5 @@
-import React from 'react'
 import { act } from '@testing-library/react-hooks'
+import React from 'react'
 import { mount, ReactWrapper } from 'enzyme'
 import { useShortcut, UseShortcutConfig } from '../../hookUtils'
 
