@@ -13,10 +13,11 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"noEmit": true,
-		"jsx": "react",
+		"jsx": "react-jsx",
 		"baseUrl": "src",
 		"declaration": true,
-		"declarationDir": "lib/types"
+		"declarationDir": "lib/types",
+		"noFallthroughCasesInSwitch": true
 	},
 	"include": ["src"],
 	"exclude": ["src/__tests__"]
