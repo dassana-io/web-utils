@@ -23,4 +23,3 @@ jobs:
                   npm run build
               env:
                   CI: true
-                  NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
