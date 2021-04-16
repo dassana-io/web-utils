@@ -1,5 +1,8 @@
 import moment from 'moment-timezone'
 
+export const convertEpochToRelativeTime = (time: number) =>
+	moment(time).fromNow()
+
 export const convertEpochToUserTimezone = (
 	time?: number,
 	format = 'llll z'
