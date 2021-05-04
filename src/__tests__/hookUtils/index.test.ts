@@ -1,7 +1,14 @@
 import { initializeLocalStorageMock } from '../../testUtils'
 import { act, renderHook } from '@testing-library/react-hooks'
 import { Emitter, EmitterEventTypes } from '../../eventUtils'
-import { ThemeType, usePrevious, useTheme } from '../../hookUtils'
+import {
+	ThemeType,
+	usePrevious,
+	useQueryParams,
+	useTheme
+} from '../../hookUtils'
+
+const mockBrowserLocation = { search: '?view=manage&alertId=P-1234' }
 
 initializeLocalStorageMock()
 
@@ -29,6 +36,32 @@ describe('usePrevious', () => {
 		rerender({ state: 'baz' })
 
 		expect(result.current).toBe('bar')
+	})
+})
+
+describe('useQueryParams', () => {
+	Object.defineProperty(window, 'location', {
+		get() {
+			return mockBrowserLocation
+		}
+	})
+
+	const initializeHook = () => renderHook(useQueryParams)
+
+	it('should return the correct query param value if the key exists', () => {
+		const { result } = initializeHook()
+
+		const alertId = result.current.getParam('alertId')
+
+		expect(alertId).toEqual('P-1234')
+	})
+
+	it('should return null if the key does not exist in the query param', () => {
+		const { result } = initializeHook()
+
+		const alertId = result.current.getParam('id')
+
+		expect(alertId).toBeNull()
 	})
 })
 

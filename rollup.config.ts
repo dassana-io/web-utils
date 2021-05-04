@@ -5,11 +5,12 @@ import resolve from '@rollup/plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-typescript2'
 
-export default {
+const config = {
 	external: [
 		'axios',
 		'axios-retry',
 		'json-merge-patch',
+		'jsonpath-plus',
 		'lodash',
 		'mitt',
 		'moment-timezone',
@@ -38,3 +39,5 @@ export default {
 		terser()
 	]
 }
+
+export default config
