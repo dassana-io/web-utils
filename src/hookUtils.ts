@@ -107,6 +107,18 @@ export const useShortcut = ({
 
 // -----------------------------------
 
+export const useQueryParams = <T extends string>() => {
+	const query = new URLSearchParams(window.location.search)
+
+	const getParam = (key: T) => query.get(key)
+
+	return {
+		getParam
+	}
+}
+
+// -----------------------------------
+
 export enum ThemeType {
 	dark = 'dark',
 	light = 'light'

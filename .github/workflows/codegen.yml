@@ -40,7 +40,6 @@ jobs:
               env:
                   CI: true
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
             - name: Open Pull Request
               uses: vsoch/pull-request-action@1.0.6
               env:
