@@ -44,6 +44,7 @@ module.exports = {
 				beforeColon: false
 			}
 		],
+		'no-debugger': 'warn',
 		'no-duplicate-imports': 'error',
 		'no-useless-computed-key': 'warn',
 		'quote-props': ['warn', 'as-needed'],
