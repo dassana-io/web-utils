@@ -152,3 +152,51 @@ export const useTheme = (emitter: Emitter) => {
 
 	return theme
 }
+
+// -----------------------------------
+
+const getWindowSize = () => ({
+	height: window.innerHeight,
+	width: window.innerWidth
+})
+
+export interface WindowSize {
+	height: number
+	width: number
+}
+
+export enum Breakpoints {
+	mobile = 414,
+	tablet = 834,
+	largeScreen = 1440
+}
+
+export const useWindowSize = () => {
+	const [windowSize, setWindowSize] = useState<WindowSize>(getWindowSize())
+
+	const [isMobile, setIsMobile] = useState(false)
+	const [isTablet, setIsTablet] = useState(false)
+
+	useEffect(() => {
+		const handleResize = () => setWindowSize(getWindowSize())
+
+		window.addEventListener('resize', handleResize)
+
+		handleResize()
+
+		return () => window.removeEventListener('resize', handleResize)
+	}, [])
+
+	useEffect(() => {
+		const windowWidth = windowSize.width
+		const isMobile = windowWidth <= Breakpoints.mobile
+
+		setIsMobile(isMobile)
+
+		const isTablet = !isMobile && windowWidth <= Breakpoints.tablet
+
+		setIsTablet(isTablet)
+	}, [windowSize])
+
+	return { isMobile, isTablet, windowSize }
+}
