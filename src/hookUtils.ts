@@ -1,8 +1,10 @@
+import noop from 'lodash/noop'
 import { Emitter, EmitterEventTypes } from 'eventUtils'
 import {
 	useCallback,
 	useEffect,
 	useLayoutEffect,
+	useMemo,
 	useRef,
 	useState
 } from 'react'
@@ -166,37 +168,41 @@ export interface WindowSize {
 }
 
 export enum Breakpoints {
-	mobile = 414,
+	mobile = 480,
 	tablet = 834,
 	largeScreen = 1440
 }
 
-export const useWindowSize = () => {
+export const useWindowSize = (onResize = noop) => {
 	const [windowSize, setWindowSize] = useState<WindowSize>(getWindowSize())
+	const [yPosition, setYPosition] = useState(0)
 
-	const [isMobile, setIsMobile] = useState(false)
-	const [isTablet, setIsTablet] = useState(false)
+	const isMobile = useMemo(() => windowSize.width <= Breakpoints.mobile, [
+		windowSize.width
+	])
+	const isTablet = useMemo(
+		() => !isMobile && windowSize.width <= Breakpoints.tablet,
+		[windowSize.width, isMobile]
+	)
 
 	useEffect(() => {
-		const handleResize = () => setWindowSize(getWindowSize())
+		const handleResize = () => {
+			onResize()
+			setWindowSize(getWindowSize())
+		}
 
 		window.addEventListener('resize', handleResize)
 
-		handleResize()
-
 		return () => window.removeEventListener('resize', handleResize)
-	}, [])
+	}, [onResize])
 
 	useEffect(() => {
-		const windowWidth = windowSize.width
-		const isMobile = windowWidth <= Breakpoints.mobile
+		const handleYPosition = () => setYPosition(window.pageYOffset)
 
-		setIsMobile(isMobile)
+		window.addEventListener('scroll', handleYPosition)
 
-		const isTablet = !isMobile && windowWidth <= Breakpoints.tablet
+		return () => window.removeEventListener('scroll', handleYPosition)
+	}, [])
 
-		setIsTablet(isTablet)
-	}, [windowSize])
-
-	return { isMobile, isTablet, windowSize }
+	return { isMobile, isTablet, windowSize, yPosition }
 }
