@@ -17,7 +17,8 @@
 		"baseUrl": "src",
 		"declaration": true,
 		"declarationDir": "lib/types",
-		"noFallthroughCasesInSwitch": true
+		"noFallthroughCasesInSwitch": true,
+		"downlevelIteration": true
 	},
 	"include": ["src"],
 	"exclude": ["src/__tests__"]

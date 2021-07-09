@@ -8,7 +8,9 @@ import {
 	useTheme
 } from '../../hookUtils'
 
-const mockBrowserLocation = { search: '?view=manage&alertId=P-1234' }
+const mockBrowserLocation = {
+	search: '?view=manage&alertId=P-1234&cloud-type=aws&cloud-type=azure'
+}
 
 initializeLocalStorageMock()
 
@@ -62,6 +64,28 @@ describe('useQueryParams', () => {
 		const alertId = result.current.getParam('id')
 
 		expect(alertId).toBeNull()
+	})
+
+	it('should return params in an array if there are more than one', () => {
+		const { result } = initializeHook()
+
+		const cloudTypes = result.current.getParam('cloud-type')
+
+		expect(cloudTypes).toMatchObject(['aws', 'azure'])
+	})
+
+	it('should return all params as an object', () => {
+		const { result } = initializeHook()
+
+		const params = result.current.params
+
+		const expected = {
+			alertId: ['P-1234'],
+			'cloud-type': ['aws', 'azure'],
+			view: ['manage']
+		}
+
+		expect(params).toMatchObject(expected)
 	})
 })
 
