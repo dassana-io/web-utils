@@ -112,10 +112,33 @@ export const useShortcut = ({
 export const useQueryParams = <T extends string>() => {
 	const query = new URLSearchParams(window.location.search)
 
-	const getParam = (key: T) => query.get(key)
+	const getParam = (key: T) => {
+		const params = query.getAll(key)
+
+		if (params.length) {
+			return params.length > 1 ? params : params[0]
+		}
+
+		return null
+	}
+
+	const getAllParams = () => {
+		const params: Record<string, string[]> = {}
+
+		for (const [key, value] of query) {
+			if (params[key]) {
+				params[key].push(value)
+			} else {
+				params[key] = [value]
+			}
+		}
+
+		return params
+	}
 
 	return {
-		getParam
+		getParam,
+		params: getAllParams()
 	}
 }
 
