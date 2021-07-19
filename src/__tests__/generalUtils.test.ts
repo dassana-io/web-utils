@@ -1,5 +1,32 @@
 import cloneDeep from 'lodash/cloneDeep'
-import { updateObjectValWithJSONPath } from '../generalUtils'
+import {
+	parseParamsString,
+	stringifyParamsObject,
+	updateObjectValWithJSONPath
+} from '../generalUtils'
+
+const mockParamsStr = 'foo=bar&id=123&id=456'
+
+const mockParamsObj = {
+	foo: 'bar',
+	id: ['123', '456']
+}
+
+describe('parseParamsString', () => {
+	it('should return a params object', () => {
+		const paramsObj = parseParamsString(`?${mockParamsStr}`)
+
+		expect(paramsObj).toMatchObject(mockParamsObj)
+	})
+})
+
+describe('stringifyParamsObject', () => {
+	it('should return stringified params', () => {
+		const paramsStr = stringifyParamsObject(mockParamsObj)
+
+		expect(paramsStr).toMatch(mockParamsStr)
+	})
+})
 
 describe('updateObjectValWithJSONPath', () => {
 	const mockObject = {
