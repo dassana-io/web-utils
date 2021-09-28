@@ -9,6 +9,42 @@ import {
 	useState
 } from 'react'
 
+interface UseClickOutseConfig {
+	callback: (key?: string) => void
+	/* The keys which will trigger the callback. Defaults to ['Escape'] */
+	keys?: string[]
+}
+
+export const useClickOutside = ({
+	callback,
+	keys = ['Escape']
+}: UseClickOutseConfig) => {
+	const ref = useRef(null)
+
+	useEffect(() => {
+		const keyListener = (e: KeyboardEvent) => {
+			if (keys.includes(e.key)) callback(e.key)
+		}
+
+		const clickListener = (e: MouseEvent) => {
+			if (ref.current && !(ref.current as any).contains(e.target))
+				callback()
+		}
+
+		document.addEventListener('click', clickListener)
+		document.addEventListener('keyup', keyListener)
+
+		return () => {
+			document.removeEventListener('click', clickListener)
+			document.removeEventListener('keyup', keyListener)
+		}
+	}, [keys, callback])
+
+	return ref
+}
+
+// -----------------------------------
+
 export const usePrevious = <T>(state: T): T | undefined => {
 	const ref = useRef<T>()
 
@@ -200,9 +236,10 @@ export const useWindowSize = (onResize = noop) => {
 	const [windowSize, setWindowSize] = useState<WindowSize>(getWindowSize())
 	const [yPosition, setYPosition] = useState(0)
 
-	const isMobile = useMemo(() => windowSize.width <= Breakpoints.mobile, [
-		windowSize.width
-	])
+	const isMobile = useMemo(
+		() => windowSize.width <= Breakpoints.mobile,
+		[windowSize.width]
+	)
 	const isTablet = useMemo(
 		() => !isMobile && windowSize.width <= Breakpoints.tablet,
 		[windowSize.width, isMobile]
