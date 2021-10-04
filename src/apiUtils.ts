@@ -32,13 +32,15 @@ export const api: (apiUrl?: string) => AxiosInstance = (apiUrl = '') => {
 }
 
 export const handleAjaxErrors = (
-	{ response }: AxiosError<ErrorTypes>,
+	error: AxiosError<ErrorTypes>,
 	emitter: Emitter
 ): void => {
-	if (response) {
-		const { key, msg } = response.data
+	if (error.response) {
+		const { key, msg } = error.response.data
 
 		return emitter.emitNotificationEvent(ev.error, msg ? msg : key)
+	} else {
+		return emitter.emitNotificationEvent(ev.error, error.toString())
 	}
 }
 

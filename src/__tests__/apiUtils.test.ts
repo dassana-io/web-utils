@@ -191,11 +191,16 @@ describe('handleAjaxErrors', () => {
 		)
 	})
 
-	it('should not emit a notification event if the response is empty', () => {
-		//@ts-ignore
-		handleAjaxErrors({}, mockEmitter)
+	it('should emit an error notification with a stringified error if response does not exist', () => {
+		const mockError = new Error('Mock error')
 
-		expect(mockEmitter.emitNotificationEvent).not.toHaveBeenCalled()
+		//@ts-ignore
+		handleAjaxErrors(mockError, mockEmitter)
+
+		expect(mockEmitter.emitNotificationEvent).toHaveBeenCalledWith(
+			ev.error,
+			mockError.toString()
+		)
 	})
 })
 
