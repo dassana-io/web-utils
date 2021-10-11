@@ -9,7 +9,9 @@ import {
 	useState
 } from 'react'
 
-interface UseClickOutseConfig {
+// -----------------------------------
+
+interface UseClickOutsideConfig {
 	callback: (key?: string) => void
 	/* The keys which will trigger the callback. Defaults to ['Escape'] */
 	keys?: string[]
@@ -18,7 +20,7 @@ interface UseClickOutseConfig {
 export const useClickOutside = ({
 	callback,
 	keys = ['Escape']
-}: UseClickOutseConfig) => {
+}: UseClickOutsideConfig) => {
 	const ref = useRef(null)
 
 	useEffect(() => {
@@ -123,6 +125,7 @@ export const usePrevious = <T>(state: T): T | undefined => {
 }
 
 // -----------------------------------
+
 type KeyboardEventTypes = 'keydown' | 'keyup'
 
 interface CommonUseShorcutConfig {
@@ -157,7 +160,7 @@ export const useShortcut = ({
 			const { key, keyEvent } = rest
 
 			const onKeyEvent = (event: KeyboardEvent) => {
-				// This prevents callback from being called if a key is pressed continuosly without lifting finger
+				// This prevents callback from being called if a key is pressed continuously without lifting finger
 				if (event.repeat) return
 
 				if (event.key === key && additionalConditionalFn()) {
