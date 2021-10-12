@@ -199,7 +199,7 @@ describe('handleAjaxErrors', () => {
 
 		expect(mockEmitter.emitNotificationEvent).toHaveBeenCalledWith(
 			ev.error,
-			mockError.toString()
+			mockError.message
 		)
 	})
 })
