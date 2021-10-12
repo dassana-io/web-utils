@@ -35,6 +35,8 @@ export const handleAjaxErrors = (
 	error: AxiosError<ErrorTypes>,
 	emitter: Emitter
 ): void => {
+	if (axios.isCancel(error)) return
+
 	if (error.response) {
 		const { key = 'Something went wrong', msg } = error.response.data
 
