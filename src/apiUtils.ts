@@ -36,11 +36,11 @@ export const handleAjaxErrors = (
 	emitter: Emitter
 ): void => {
 	if (error.response) {
-		const { key, msg } = error.response.data
+		const { key = 'Something went wrong', msg } = error.response.data
 
 		return emitter.emitNotificationEvent(ev.error, msg ? msg : key)
 	} else {
-		return emitter.emitNotificationEvent(ev.error, error.toString())
+		return emitter.emitNotificationEvent(ev.error, error.message)
 	}
 }
 
