@@ -1,4 +1,5 @@
 import noop from 'lodash/noop'
+import { Breakpoints, WindowSize } from './constants'
 import { Emitter, EmitterEventTypes } from 'eventUtils'
 import {
 	useCallback,
@@ -290,17 +291,6 @@ const getWindowSize = () => ({
 	height: window.innerHeight,
 	width: window.innerWidth
 })
-
-export interface WindowSize {
-	height: number
-	width: number
-}
-
-export enum Breakpoints {
-	mobile = 480,
-	tablet = 834,
-	largeScreen = 1440
-}
 
 export const useWindowSize = (onResize = noop) => {
 	const [windowSize, setWindowSize] = useState<WindowSize>(getWindowSize())
