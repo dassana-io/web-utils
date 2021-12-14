@@ -7,9 +7,10 @@ export type DistributiveOmit<T, K extends keyof T> = T extends T
 
 // Onboarding step number enum used in web-orchestrator and web-onboarding
 export enum OnboardingStepNum {
-	userName = 1,
-	userWorkHours = 2,
-	userPersona = 3,
-	orgName = 4,
-	orgManager = 5
+	endUserLicenseAgreement = 1,
+	userName = 2,
+	userWorkHours = 3,
+	userPersona = 4,
+	orgName = 5,
+	orgManager = 6
 }

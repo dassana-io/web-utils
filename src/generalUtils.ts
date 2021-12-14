@@ -8,6 +8,24 @@ interface CopyToClipboard {
 export const copyToClipboard: CopyToClipboard = (str, callback) =>
 	window.navigator.clipboard.writeText(str).then(callback)
 
+interface DownloadBlob {
+	(blob: Blob, filename: string, callback?: () => void): void
+}
+export const downloadBlob: DownloadBlob = (blob, filename, callback) => {
+	const element = document.createElement('a')
+
+	element.href = URL.createObjectURL(blob)
+	element.download = filename
+
+	document.body.appendChild(element)
+
+	element.click()
+
+	document.body.removeChild(element)
+
+	if (callback) callback()
+}
+
 export const parseParamsString = (str: string, options: ParseOptions = {}) =>
 	queryString.parse(str, options)
 
