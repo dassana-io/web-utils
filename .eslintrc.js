@@ -34,7 +34,6 @@ module.exports = {
 		'@typescript-eslint/no-non-null-assertion': 'off',
 		'@typescript-eslint/no-unused-expressions': 'off',
 		'@typescript-eslint/no-unused-vars': 'off',
-		'@typescript-eslint/no-unused-vars-experimental': 'warn',
 		'comma-dangle': ['warn', 'never'],
 		'comma-spacing': ['warn', { after: true, before: false }],
 		'key-spacing': [
