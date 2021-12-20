@@ -51,11 +51,11 @@ interface PatchInfo<T, U> {
 	initialValues: T
 }
 
-export const generatePatch = <T extends {}, U>({
+export const generatePatch = <T extends {}, U extends {}>({
 	initialValues,
 	fieldValues
 }: PatchInfo<T, U>): U =>
 	(jsonmergepatch.generate(
-		pick(initialValues, Object.keys(fieldValues)),
+		pick(initialValues, Object.keys(fieldValues)) as unknown as ValidJson,
 		fieldValues
 	) || {}) as U
