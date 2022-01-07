@@ -1,6 +1,9 @@
 import { JSONPath, JSONPathOptions } from 'jsonpath-plus'
 import queryString, { ParseOptions, StringifyOptions } from 'query-string'
 
+export const convertJSONToString = (json: Record<string, any>) =>
+	JSON.stringify(json, null, 2)
+
 interface CopyToClipboard {
 	(str: string, callback?: () => void): void
 }

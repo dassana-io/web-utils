@@ -1,5 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep'
 import {
+	convertJSONToString,
 	parseParamsString,
 	stringifyParamsObject,
 	updateObjectValWithJSONPath
@@ -11,6 +12,14 @@ const mockParamsObj = {
 	foo: 'bar',
 	id: ['123', '456']
 }
+
+describe('convertJSONToString', () => {
+	it('should return a properly formatted JSON string', () => {
+		const jsonStr = convertJSONToString(mockParamsObj)
+
+		expect(jsonStr).toMatch(JSON.stringify(mockParamsObj, null, 2))
+	})
+})
 
 describe('parseParamsString', () => {
 	it('should return a params object', () => {
