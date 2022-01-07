@@ -2,6 +2,7 @@ import noop from 'lodash/noop'
 import { Breakpoints, WindowSize } from './constants'
 import { Emitter, EmitterEventTypes } from 'eventUtils'
 import {
+	RefObject,
 	useCallback,
 	useEffect,
 	useLayoutEffect,
@@ -47,6 +48,43 @@ export const useClickOutside = ({
 }
 
 // -----------------------------------
+
+/**
+ * Custom hook that tracks an element's height and width
+ * Dimension outputs update on resize via observer
+ */
+export const useElementSize = (ref: RefObject<HTMLElement>) => {
+	const [size, setElementSize] = useState<{
+		height: number
+		width: number
+	}>({ height: 0, width: 0 })
+
+	useLayoutEffect(() => {
+		if (ref && ref.current) {
+			const refCurr = ref.current
+
+			const onResize = () => {
+				const { height, width } = refCurr.getBoundingClientRect()
+
+				setElementSize({ height, width })
+			}
+
+			// Create a new instance of ResizeObserver with onResize callback.
+			const observer = new ResizeObserver(onResize)
+
+			// observer will observe the element and fire the callback any time its size changes.
+			observer.observe(refCurr)
+
+			// Cleanup by unobserving the element and disconnecting observer.
+			return () => {
+				observer.unobserve(refCurr)
+				observer.disconnect()
+			}
+		}
+	}, [ref.current]) // eslint-disable-line react-hooks/exhaustive-deps
+
+	return size
+}
 
 /**
  * Custom hook that informs when a div element is in view of the

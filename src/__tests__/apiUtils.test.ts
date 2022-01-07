@@ -3,7 +3,6 @@ import { ev } from '../eventUtils'
 import { initializeLocalStorageMock } from '../testUtils'
 import {
 	api,
-	DASSANA_REQUEST_ID,
 	ErrorTypes,
 	generatePatch,
 	handleAjaxErrors,
@@ -72,17 +71,6 @@ describe('api', () => {
 		expect(mockedAxios.create).not.toHaveBeenCalledWith(
 			expect.objectContaining({
 				baseURL: expect.anything()
-			})
-		)
-	})
-
-	it('should call axios.create with the correct headers', () => {
-		expect(mockedAxios.create).toHaveBeenCalledWith(
-			expect.objectContaining({
-				headers: expect.objectContaining({
-					Authorization: `Bearer ${mockToken}`,
-					[DASSANA_REQUEST_ID]: 'abc'
-				})
 			})
 		)
 	})

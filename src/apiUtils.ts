@@ -13,18 +13,25 @@ export type ErrorTypes = ErrorInfo | InternalError
 export type { AxiosInstance, AxiosRequestConfig } from 'axios'
 
 export const api: (apiUrl?: string) => AxiosInstance = (apiUrl = '') => {
-	const axiosRequestConfig: AxiosRequestConfig = {
-		headers: {
-			Authorization: `Bearer ${localStorage.getItem(TOKEN)}`,
-			[DASSANA_REQUEST_ID]: uuidv4()
-		}
-	}
+	const axiosRequestConfig: AxiosRequestConfig = {}
 
 	if (apiUrl) {
 		axiosRequestConfig.baseURL = apiUrl
 	}
 
 	const apiClient = axios.create(axiosRequestConfig)
+
+	apiClient.interceptors.request.use(
+		config => ({
+			...config,
+			headers: {
+				...config.headers,
+				Authorization: `Bearer ${localStorage.getItem(TOKEN)}`,
+				[DASSANA_REQUEST_ID]: uuidv4()
+			}
+		}),
+		error => Promise.reject(error)
+	)
 
 	axiosRetry(apiClient)
 
