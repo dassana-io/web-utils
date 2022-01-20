@@ -1,3 +1,5 @@
+export const MICRO_FE_CONTAINER_ID = 'micro-fe-container'
+
 export const ONBOARDING_DEFAULT_STEP = 'onboardingDefaultStep'
 
 export interface WindowSize {
