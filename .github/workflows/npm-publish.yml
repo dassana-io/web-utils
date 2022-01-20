@@ -14,7 +14,7 @@ jobs:
             # Publish to GitHub Package Registry
             - uses: actions/setup-node@master
               with:
-                  node-version: 12
+                  node-version: 16
                   registry-url: https://npm.pkg.github.com/
                   scope: '@dassana-io'
             - name: Publish to GitHub Package Registry
