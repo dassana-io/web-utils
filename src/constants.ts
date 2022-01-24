@@ -1,3 +1,5 @@
+import { KeyMapConfig, ModifierKeys, OperatingSystems } from 'types'
+
 export const MICRO_FE_CONTAINER_ID = 'micro-fe-container'
 
 export const ONBOARDING_DEFAULT_STEP = 'onboardingDefaultStep'
@@ -28,5 +30,51 @@ export const mediaSelectorsWithBreakpoints = {
 		[largeScreen]: getMediaSelector(largeScreen),
 		[mobile]: getMediaSelector(mobile),
 		[tablet]: getMediaSelector(tablet)
+	}
+}
+
+export const modifierKeysMap: Record<
+	string,
+	Record<OperatingSystems, KeyMapConfig>
+> = {
+	[ModifierKeys.command]: {
+		[OperatingSystems.mac]: {
+			key: 'Meta',
+			label: '⌘'
+		},
+		[OperatingSystems.windows]: {
+			key: 'Control',
+			label: 'Ctrl'
+		}
+	},
+	[ModifierKeys.control]: {
+		[OperatingSystems.mac]: {
+			key: 'Control',
+			label: '^'
+		},
+		[OperatingSystems.windows]: {
+			key: 'Control',
+			label: 'Ctrl'
+		}
+	},
+	[ModifierKeys.option]: {
+		[OperatingSystems.mac]: {
+			key: 'Alt',
+			label: '⌥'
+		},
+		[OperatingSystems.windows]: {
+			key: 'Alt',
+			label: 'Alt'
+		}
+	},
+	[ModifierKeys.shift]: {
+		[OperatingSystems.mac]: {
+			key: 'Shift',
+			label: '⇧'
+		},
+		[OperatingSystems.windows]: {
+			key: 'Shift',
+			label: 'Shift'
+		}
 	}
 }

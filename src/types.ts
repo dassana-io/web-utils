@@ -14,3 +14,20 @@ export enum OnboardingStepNum {
 	orgName = 5,
 	orgManager = 6
 }
+
+export enum ModifierKeys {
+	command = 'command',
+	control = 'control',
+	option = 'option',
+	shift = 'shift'
+}
+
+export enum OperatingSystems {
+	mac = 'mac',
+	windows = 'windows'
+}
+
+export interface KeyMapConfig {
+	key: KeyboardEvent['key']
+	label: string
+}
