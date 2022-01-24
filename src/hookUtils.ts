@@ -1,5 +1,7 @@
+import capitalize from 'lodash/capitalize'
 import noop from 'lodash/noop'
-import { Breakpoints, WindowSize } from './constants'
+import { OperatingSystems } from 'types'
+import { Breakpoints, modifierKeysMap, WindowSize } from './constants'
 import { Emitter, EmitterEventTypes } from 'eventUtils'
 import {
 	RefObject,
@@ -250,6 +252,44 @@ export const useShortcut = ({
 		preventDefault,
 		rest
 	])
+}
+
+export const getKeyboardKeyAndLabel = (
+	key: SingleKeyUseShorcut['key'],
+	os: OperatingSystems
+) => {
+	let label = capitalize(key)
+
+	if (modifierKeysMap[key]) {
+		label = modifierKeysMap[key][os].label
+		key = modifierKeysMap[key][os].key
+	}
+
+	return {
+		key,
+		label
+	}
+}
+
+export const isMacOS = () => window.navigator.userAgent.indexOf('Mac') > -1
+
+export const getModifierKeys = (keysArr: MultipleKeysUseShorcut['keys']) => {
+	const os = isMacOS() ? OperatingSystems.mac : OperatingSystems.windows
+
+	const keys: string[] = []
+	const keyLabels: string[] = []
+
+	keysArr.forEach(key => {
+		const { key: keyCode, label } = getKeyboardKeyAndLabel(key, os)
+
+		keys.push(keyCode)
+		keyLabels.push(label)
+	})
+
+	return {
+		keys: keys as MultipleKeysUseShorcut['keys'],
+		label: keyLabels.join(' + ')
+	}
 }
 
 // -----------------------------------
