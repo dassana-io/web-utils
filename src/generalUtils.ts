@@ -1,5 +1,9 @@
 import { JSONPath, JSONPathOptions } from 'jsonpath-plus'
+import { Options, parse } from 'json2csv'
 import queryString, { ParseOptions, StringifyOptions } from 'query-string'
+
+export const convertJSONToCsv = <T>(json: T[] | T, options?: Options<T>) =>
+	parse<T>(json, options)
 
 export const convertJSONToString = (json: Record<string, any>) =>
 	JSON.stringify(json, null, 2)

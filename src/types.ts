@@ -1,3 +1,7 @@
+import { FieldInfo, Options } from 'json2csv'
+
+export type { FieldInfo, Options }
+
 /**
  * More info on Distributive Conditional Types: https://stackoverflow.com/a/57103940/11279811
  */
