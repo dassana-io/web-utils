@@ -1,5 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep'
 import {
+	convertJSONToCsv,
 	convertJSONToString,
 	parseParamsString,
 	stringifyParamsObject,
@@ -8,10 +9,24 @@ import {
 
 const mockParamsStr = 'foo=bar&id=123&id=456'
 
+interface MockParams {
+	foo: string
+	id: string[]
+}
+
 const mockParamsObj = {
 	foo: 'bar',
 	id: ['123', '456']
 }
+
+describe('convertJSONToCsv', () => {
+	it('should return a csv string', () => {
+		const csvStr = convertJSONToCsv<MockParams>(mockParamsObj)
+
+		expect(typeof csvStr).toBe('string')
+		expect(csvStr).toBe('"foo","id"\n"bar","[""123"",""456""]"')
+	})
+})
 
 describe('convertJSONToString', () => {
 	it('should return a properly formatted JSON string', () => {
