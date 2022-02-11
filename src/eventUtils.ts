@@ -8,13 +8,13 @@ export enum ev {
 }
 
 export enum EmitterEventTypes {
-	getAvatarContainerWidth = 'getAvatarContainerWidth',
+	getOrchestratorTopNavWidth = 'getOrchestratorTopNavWidth',
 	loggedOut = 'loggedOut',
 	logout = 'logout',
 	offsetProfileIcon = 'offsetProfileIcon',
 	profileUpdated = 'profileUpdated',
 	themeUpdated = 'themeUpdated',
-	triggerAvatarContainer = 'triggerAvatarContainer'
+	triggerOrchestratorTopNav = 'triggerOrchestratorTopNav'
 }
 
 export interface NotificationEvent {
