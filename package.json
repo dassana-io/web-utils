@@ -8,7 +8,7 @@
 		"url": "ssh://git@github.com:dassana-io/web-utils",
 		"directory": "@dassana-io/web-utils"
 	},
-	"version": "0.9.5",
+	"version": "0.9.6",
 	"dependencies": {
 		"axios": "^0.24.0",
 		"axios-retry": "^3.2.4",

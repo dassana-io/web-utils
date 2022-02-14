@@ -9,6 +9,10 @@ export interface WindowSize {
 	width: number
 }
 
+export enum LocalStorage {
+	onboarding = 'onboarding'
+}
+
 export enum Breakpoints {
 	mobile = 480,
 	tablet = 834,
