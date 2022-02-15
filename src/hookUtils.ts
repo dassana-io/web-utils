@@ -1,6 +1,7 @@
 import capitalize from 'lodash/capitalize'
 import noop from 'lodash/noop'
 import { OperatingSystems } from 'types'
+import { unstable_batchedUpdates } from 'react-dom'
 import { Breakpoints, modifierKeysMap, WindowSize } from './constants'
 import { Emitter, EmitterEventTypes } from 'eventUtils'
 import {
@@ -334,7 +335,7 @@ export enum ThemeType {
 	light = 'light'
 }
 
-export const useTheme = (emitter: Emitter) => {
+export const useTheme = (emitter: Emitter): ThemeType => {
 	const getLocalStorageTheme = () =>
 		(localStorage.getItem('theme') as ThemeType) || ThemeType.dark
 	const [theme, setTheme] = useState<ThemeType>(getLocalStorageTheme())
@@ -365,12 +366,86 @@ export const useTheme = (emitter: Emitter) => {
 
 // -----------------------------------
 
+interface UseStopwatch {
+	pauseStopwatch: () => void
+	resetStopwatch: () => void
+	resumeStopwatch: () => void
+	startStopwatch: (reset?: boolean) => void
+	time: number
+}
+
+export const useStopwatch = (interval = 10): UseStopwatch => {
+	const [isActive, setIsActive] = useState(false)
+	const [isPaused, setIsPaused] = useState(true)
+	const [time, setTime] = useState(0)
+
+	const stopwatchInterval = useRef<NodeJS.Timeout>()
+
+	const startStopwatch = useCallback(
+		(reset?: boolean) =>
+			unstable_batchedUpdates(() => {
+				if (reset) setTime(0)
+
+				setIsActive(true)
+				setIsPaused(false)
+			}),
+		[]
+	)
+
+	const pauseStopwatch = useCallback(() => setIsPaused(true), [])
+	const resumeStopwatch = useCallback(() => setIsPaused(false), [])
+
+	const resetStopwatch = useCallback(
+		() =>
+			unstable_batchedUpdates(() => {
+				setIsActive(false)
+				setIsPaused(true)
+				setTime(0)
+			}),
+		[]
+	)
+
+	useEffect(() => {
+		const currStopwatchInterval = stopwatchInterval.current
+
+		if (isActive && !isPaused) {
+			stopwatchInterval.current = setInterval(
+				() => setTime(time => time + interval),
+				interval
+			)
+		} else if (currStopwatchInterval) {
+			clearInterval(currStopwatchInterval)
+		}
+
+		return () => {
+			if (currStopwatchInterval) clearInterval(currStopwatchInterval)
+		}
+	}, [interval, isActive, isPaused])
+
+	return {
+		pauseStopwatch,
+		resetStopwatch,
+		resumeStopwatch,
+		startStopwatch,
+		time
+	}
+}
+
+// -----------------------------------
+
+interface UseWindowSize {
+	isMobile: boolean
+	isTablet: boolean
+	windowSize: WindowSize
+	yPosition: number
+}
+
 const getWindowSize = () => ({
 	height: window.innerHeight,
 	width: window.innerWidth
 })
 
-export const useWindowSize = (onResize = noop) => {
+export const useWindowSize = (onResize = noop): UseWindowSize => {
 	const [windowSize, setWindowSize] = useState<WindowSize>(getWindowSize())
 	const [yPosition, setYPosition] = useState(0)
 
