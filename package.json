@@ -8,10 +8,11 @@
 		"url": "ssh://git@github.com:dassana-io/web-utils",
 		"directory": "@dassana-io/web-utils"
 	},
-	"version": "0.9.6",
+	"version": "0.9.7",
 	"dependencies": {
 		"axios": "^0.24.0",
 		"axios-retry": "^3.2.4",
+		"can-ndjson-stream": "^1.0.2",
 		"json-merge-patch": "^1.0.2",
 		"json2csv": "^5.0.6",
 		"jsonpath-plus": "^6.0.1",

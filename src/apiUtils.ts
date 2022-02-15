@@ -5,12 +5,19 @@ import { v4 as uuidv4 } from 'uuid'
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
 import { Emitter, ev } from './eventUtils'
 import { ErrorInfo, InternalError } from 'api'
+import ndjsonStream, { StreamedResponse } from 'can-ndjson-stream'
 
 export const DASSANA_REQUEST_ID = 'x-dassana-request-id'
 export const TOKEN = 'token'
 
 export type ErrorTypes = ErrorInfo | InternalError
 export type { AxiosInstance, AxiosRequestConfig } from 'axios'
+
+const getHeaders = (additionalHeaders = {}): AxiosRequestConfig['headers'] => ({
+	...additionalHeaders,
+	Authorization: `Bearer ${localStorage.getItem(TOKEN)}`,
+	[DASSANA_REQUEST_ID]: uuidv4()
+})
 
 export const api: (apiUrl?: string) => AxiosInstance = (apiUrl = '') => {
 	const axiosRequestConfig: AxiosRequestConfig = {}
@@ -24,11 +31,7 @@ export const api: (apiUrl?: string) => AxiosInstance = (apiUrl = '') => {
 	apiClient.interceptors.request.use(
 		config => ({
 			...config,
-			headers: {
-				...config.headers,
-				Authorization: `Bearer ${localStorage.getItem(TOKEN)}`,
-				[DASSANA_REQUEST_ID]: uuidv4()
-			}
+			headers: getHeaders(config.headers)
 		}),
 		error => Promise.reject(error)
 	)
@@ -50,6 +53,55 @@ export const handleAjaxErrors = (
 		return emitter.emitNotificationEvent(ev.error, msg ? msg : key)
 	} else {
 		return emitter.emitNotificationEvent(ev.error, error.message)
+	}
+}
+
+interface NdJsonStreamConfig<T> {
+	additionalConfig?: Omit<RequestInit, 'body' | 'method'>
+	data?: Record<string, any>
+	endpoint: string
+	handleErrors?: (error: any) => void
+	method: AxiosRequestConfig['method']
+	onNewStreamResponse: (result: StreamedResponse<T>['value']) => void
+	onPreStreamCb?: () => void
+}
+
+export const initNdJsonStream = async <T>({
+	additionalConfig = {},
+	data = {},
+	endpoint,
+	handleErrors,
+	method,
+	onNewStreamResponse,
+	onPreStreamCb
+}: NdJsonStreamConfig<T>) => {
+	try {
+		const response = await fetch(endpoint, {
+			...additionalConfig,
+			body: JSON.stringify(data),
+			headers: {
+				Accept: 'application/x-ndjson',
+				'Content-type': 'application/json',
+				...getHeaders(additionalConfig.headers)
+			},
+			method
+		})
+
+		const jsonStreamReader = ndjsonStream<T>(response.body).getReader()
+
+		let result: StreamedResponse<T> | undefined
+
+		onPreStreamCb && onPreStreamCb()
+
+		while (!result || !result.done) {
+			result = await jsonStreamReader.read()
+
+			if (result) {
+				onNewStreamResponse(result.value)
+			}
+		}
+	} catch (error: any) {
+		handleErrors && handleErrors(error)
 	}
 }
 
