@@ -36,6 +36,9 @@ export const downloadBlob: DownloadBlob = (blob, filename, callback) => {
 export const parseParamsString = (str: string, options: ParseOptions = {}) =>
 	queryString.parse(str, options)
 
+export const sleep = async (ms: number) =>
+	await new Promise(resolve => setTimeout(resolve, ms))
+
 export const stringifyParamsObject = (
 	params: Record<string, any>,
 	options: StringifyOptions = {}
