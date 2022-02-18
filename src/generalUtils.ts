@@ -57,3 +57,18 @@ export const updateObjectValWithJSONPath = <T>(
 		path: `$.${key}`
 	})
 }
+
+export const updateSearchParamsInUrl = (
+	newParams: Record<string, string[]>,
+	newHash = ''
+) => {
+	const { hash, origin, pathname } = window.location
+
+	if (newHash && newHash.charAt(0) !== '#') newHash = `#${newHash}`
+
+	const newUrl = `${origin}${pathname}?${stringifyParamsObject(newParams)}${
+		newHash ? newHash : hash
+	}`
+
+	window.history.pushState(null, '', newUrl)
+}

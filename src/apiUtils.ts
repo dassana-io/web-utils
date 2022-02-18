@@ -87,18 +87,22 @@ export const initNdJsonStream = async <T>({
 			method
 		})
 
-		const jsonStreamReader = ndjsonStream<T>(response.body).getReader()
+		if (response && response.status >= 200 && response.status <= 299) {
+			const jsonStreamReader = ndjsonStream<T>(response.body).getReader()
 
-		let result: StreamedResponse<T> | undefined
+			let result: StreamedResponse<T> | undefined
 
-		onPreStreamCb && onPreStreamCb()
+			onPreStreamCb && onPreStreamCb()
 
-		while (!result || !result.done) {
-			result = await jsonStreamReader.read()
+			while (!result || !result.done) {
+				result = await jsonStreamReader.read()
 
-			if (result) {
-				onNewStreamResponse(result.value)
+				if (result) {
+					onNewStreamResponse(result.value)
+				}
 			}
+		} else {
+			handleErrors && handleErrors(response)
 		}
 	} catch (error: any) {
 		handleErrors && handleErrors(error)
