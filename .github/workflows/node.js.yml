@@ -15,6 +15,10 @@ jobs:
                   node-version: '16.x'
                   registry-url: https://npm.pkg.github.com/
                   scope: '@dassana-io'
+            - name: Setup timezone
+              uses: zcong1993/setup-timezone@master
+              with:
+                  timezone: America/Los_Angeles
             - name: Run install, lint, test, and build
               run: |
                   npm install
