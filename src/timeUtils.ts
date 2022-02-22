@@ -1,9 +1,11 @@
-import moment from 'moment-timezone'
+import { format } from 'date-fns-tz'
+import { formatDistanceToNowStrict } from 'date-fns'
 
 export const convertEpochToRelativeTime = (time: number) =>
-	moment(time).fromNow()
+	formatDistanceToNowStrict(time, { addSuffix: true })
 
 export const convertEpochToUserTimezone = (
 	time?: number,
-	format = 'llll z'
-): string => (time ? moment(time).tz(moment.tz.guess(true)).format(format) : '')
+	timeFormat = 'EEE, MMM d yyyy hh:mm a z',
+	timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+): string => (time ? format(time, timeFormat, { timeZone }) : '')
