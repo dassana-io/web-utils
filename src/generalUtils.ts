@@ -2,6 +2,16 @@ import { JSONPath, JSONPathOptions } from 'jsonpath-plus'
 import { Options, parse } from 'json2csv'
 import queryString, { ParseOptions, StringifyOptions } from 'query-string'
 
+export const convertCamelToKebabCase = (str: string): string =>
+	str
+		.split('')
+		.map((char, index) =>
+			char === char.toUpperCase()
+				? `${index !== 0 ? '-' : ''}${char.toLowerCase()}`
+				: char
+		)
+		.join('')
+
 export const convertJSONToCsv = <T>(json: T[] | T, options?: Options<T>) =>
 	parse<T>(json, options)
 
