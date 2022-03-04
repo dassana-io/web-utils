@@ -35,7 +35,7 @@ export const downloadBlob: DownloadBlob = (blob, filename, callback) => {
 
 export const getAppEnv = () => {
 	const host = window.location.host
-	const env = host.includes('localhost') ? 'dev' : host.split('.').pop
+	const env = host.includes('localhost') ? 'dev' : host.split('.').pop()
 
 	return env
 }
