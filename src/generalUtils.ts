@@ -33,6 +33,13 @@ export const downloadBlob: DownloadBlob = (blob, filename, callback) => {
 	if (callback) callback()
 }
 
+export const getAppEnv = () => {
+	const host = window.location.host
+	const env = host.includes('localhost') ? 'dev' : host.split('.').pop
+
+	return env
+}
+
 export const parseParamsString = (str: string, options: ParseOptions = {}) =>
 	queryString.parse(str, options)
 
