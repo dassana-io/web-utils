@@ -31,6 +31,14 @@ export enum OperatingSystems {
 	windows = 'windows'
 }
 
+export enum Services {
+	appStore = 'appStore',
+	onboarding = 'onboarding',
+	orgManager = 'orgManager',
+	profile = 'profile',
+	query = 'query'
+}
+
 export interface KeyMapConfig {
 	key: KeyboardEvent['key']
 	label: string
