@@ -1,3 +1,4 @@
+import isUndefined from 'lodash/isUndefined'
 import { JSONPath, JSONPathOptions } from 'jsonpath-plus'
 import { Options, parse } from 'json2csv'
 import queryString, { ParseOptions, StringifyOptions } from 'query-string'
@@ -67,15 +68,52 @@ export const updateObjectValWithJSONPath = <T>(
 
 export const updateSearchParamsInUrl = (
 	newParams: Record<string, string[]>,
-	newHash = ''
+	newHash?: string
 ) => {
 	const { hash, origin, pathname } = window.location
 
 	if (newHash && newHash.charAt(0) !== '#') newHash = `#${newHash}`
 
 	const newUrl = `${origin}${pathname}?${stringifyParamsObject(newParams)}${
-		newHash ? newHash : hash
+		!isUndefined(newHash) ? newHash : hash
 	}`
 
 	window.history.pushState(null, '', newUrl)
+}
+
+interface BrowserUrlOptions {
+	includeOrigin?: boolean
+}
+
+interface BrowserUrl {
+	pathname?: string
+	search?: Record<string, any>
+	hash?: Record<string, any>
+	options?: BrowserUrlOptions
+}
+
+export const buildBrowserUrl = ({
+	hash,
+	search,
+	options = {},
+	pathname
+}: BrowserUrl) => {
+	const { origin, pathname: originalPathname } = window.location
+	const { includeOrigin = false } = options
+
+	let composedUrl = includeOrigin ? origin : ''
+
+	composedUrl = `${composedUrl}/${
+		isUndefined(pathname) ? originalPathname : pathname
+	}`
+
+	if (search) {
+		composedUrl += `?${stringifyParamsObject(search)}`
+	}
+
+	if (hash) {
+		composedUrl += `#${stringifyParamsObject(hash)}`
+	}
+
+	return composedUrl
 }
