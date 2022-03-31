@@ -119,6 +119,6 @@ export const generatePatch = <T extends {}, U extends {}>({
 	fieldValues
 }: PatchInfo<T, U>): U =>
 	(jsonmergepatch.generate(
-		pick(initialValues, Object.keys(fieldValues)) as unknown as ValidJson,
+		pick(initialValues, Object.keys(fieldValues)),
 		fieldValues
 	) || {}) as U
