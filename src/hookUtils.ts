@@ -479,3 +479,25 @@ export const useWindowSize = (onResize = noop): UseWindowSize => {
 
 	return { isMobile, isTablet, windowSize, yPosition }
 }
+
+// -----------------------------------
+
+export const useRemainingContainerHeight = (
+	containerRef: RefObject<HTMLElement>,
+	additionalOffset = 0
+) => {
+	const {
+		windowSize: { height: windowHeight }
+	} = useWindowSize()
+	const [remainingHeight, setRemainingHeight] = useState(0)
+
+	useEffect(() => {
+		if (containerRef.current) {
+			setRemainingHeight(
+				windowHeight - containerRef.current.offsetTop - additionalOffset
+			)
+		}
+	}, [additionalOffset, containerRef, windowHeight])
+
+	return remainingHeight
+}
