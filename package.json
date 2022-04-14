@@ -27,6 +27,7 @@
 	"scripts": {
 		"api-models:generate": "rm -rf src/api/$npm_config_output_folder; mkdir -p src/api; cp -R $npm_config_input_folder/model src/api/$npm_config_output_folder; rm -rf $npm_config_input_folder; cd src/api/$npm_config_output_folder; mv models.ts index.ts; prettier --write .",
 		"api-models:global": "npm run api-models:generate --input_folder=globalApi --output_folder=global",
+		"api-models:profile": "npm run api-models:generate --input_folder=profileApi --output_folder=profile",
 		"codegen": "node codegen.js",
 		"build": "rollup -c rollup.config.ts",
 		"test": "react-scripts test",
