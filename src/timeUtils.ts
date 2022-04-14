@@ -19,3 +19,6 @@ export const convertEpochToUserTimezone = (
  */
 export const guessUserTimezoneOffset = () =>
 	-(new Date().getTimezoneOffset() / 60)
+
+export const guessUserTimezone = (): string =>
+	Intl.DateTimeFormat().resolvedOptions().timeZone
