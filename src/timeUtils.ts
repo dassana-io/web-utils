@@ -13,7 +13,7 @@ export const convertEpochToUserTimezone = (
 	timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 ): string => (time ? format(time, timeFormat, { timeZone }) : '')
 
-export const filterOutExtraTimezones = ({ id }: TimezoneV2) =>
+const filterOutExtraTimezones = ({ id }: TimezoneV2) =>
 	id && !id.startsWith('Etc/')
 
 /**
@@ -35,7 +35,7 @@ export interface TimezoneOption {
 	value: string
 }
 
-export const mapTimezoneOptions = ({ id = '', utcOffset }: TimezoneV2) => {
+const mapTimezoneOptions = ({ id = '', utcOffset }: TimezoneV2) => {
 	const offset = !utcOffset || utcOffset === 'Z' ? '±00:00' : utcOffset
 
 	const parseOffset = (offset: string): number => {
