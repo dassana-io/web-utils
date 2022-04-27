@@ -259,12 +259,16 @@ export const useShortcut = ({
 				if (firstKey === event.key) setIsFirstKeyPressed(false)
 			}
 
+			const onWindowBlur = () => setIsFirstKeyPressed(false)
+
 			window.addEventListener('keydown', onKeyDown)
 			window.addEventListener('keyup', onKeyUp)
+			window.addEventListener('blur', onWindowBlur)
 
 			return () => {
 				window.removeEventListener('keydown', onKeyDown)
 				window.removeEventListener('keyup', onKeyUp)
+				window.removeEventListener('blur', onWindowBlur)
 			}
 		}
 	}, [
