@@ -299,7 +299,7 @@ export const getKeyboardKeyAndLabel = (
 
 export const isMacOS = () => window.navigator.userAgent.indexOf('Mac') > -1
 
-export const getModifierKeys = (keysArr: MultipleKeysUseShorcut['keys']) => {
+export const getModifierKeys = (keysArr: string[]) => {
 	const os = isMacOS() ? OperatingSystems.mac : OperatingSystems.windows
 
 	const keys: string[] = []
