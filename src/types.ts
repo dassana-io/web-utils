@@ -36,7 +36,7 @@ export enum Services {
 	dashboard = 'dashboard',
 	detection = 'detection',
 	integration = 'integration',
-	notification = 'notification',
+	notificationRule = 'notificationRule',
 	onboarding = 'onboarding',
 	orgManager = 'orgManager',
 	profile = 'profile',
