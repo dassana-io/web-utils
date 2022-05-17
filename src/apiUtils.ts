@@ -48,9 +48,13 @@ export const handleAjaxErrors = (
 	if (axios.isCancel(error)) return
 
 	if (error.response) {
-		const { key = 'Something went wrong', msg } = error.response.data
+		const { key, msg } = error.response.data
+		const message = msg ? msg : key
 
-		return emitter.emitNotificationEvent(ev.error, msg ? msg : key)
+		return emitter.emitNotificationEvent(
+			ev.error,
+			message ? message : JSON.stringify(error.response.data)
+		)
 	} else {
 		return emitter.emitNotificationEvent(ev.error, error.message)
 	}
