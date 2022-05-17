@@ -1,4 +1,5 @@
 import isUndefined from 'lodash/isUndefined'
+import pluralize from 'pluralize'
 import { JSONPath, JSONPathOptions } from 'jsonpath-plus'
 import { Options, parse } from 'json2csv'
 import queryString, { ParseOptions, StringifyOptions } from 'query-string'
@@ -117,3 +118,9 @@ export const buildBrowserUrl = ({
 
 	return composedUrl
 }
+
+export const pluralizeWord = (
+	word: string,
+	count?: number,
+	showCount = false
+) => pluralize(word, count, showCount)
