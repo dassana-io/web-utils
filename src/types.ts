@@ -33,9 +33,9 @@ export enum OperatingSystems {
 
 export enum Services {
 	appStore = 'appStore',
-	detection = 'detections',
-	integration = 'integrations',
-	notificationRule = 'notificationRules',
+	detections = 'detections',
+	integrations = 'integrations',
+	notificationRules = 'notificationRules',
 	onboarding = 'onboarding',
 	orgManager = 'orgManager',
 	profile = 'profile',
