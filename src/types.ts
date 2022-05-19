@@ -33,14 +33,14 @@ export enum OperatingSystems {
 
 export enum Services {
 	appStore = 'appStore',
-	detection = 'detection',
-	integration = 'integration',
-	notificationRule = 'notificationRule',
+	detections = 'detections',
+	integrations = 'integrations',
+	notificationRules = 'notificationRules',
 	onboarding = 'onboarding',
 	orgManager = 'orgManager',
 	profile = 'profile',
 	query = 'query',
-	visualize = 'visualize',
+	visualize = 'visualize'
 }
 
 export interface KeyMapConfig {
