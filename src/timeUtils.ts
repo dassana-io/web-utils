@@ -1,5 +1,5 @@
-import { format } from 'date-fns-tz'
 import { formatDistanceToNowStrict } from 'date-fns'
+import { formatInTimeZone } from 'date-fns-tz'
 import he from 'he'
 import sortBy from 'lodash/sortBy'
 import { TimezoneV2 } from 'api/profile'
@@ -11,7 +11,7 @@ export const convertEpochToUserTimezone = (
 	time?: number,
 	timeFormat = 'EEE, MMM d yyyy hh:mm a z',
 	timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-): string => (time ? format(time, timeFormat, { timeZone }) : '')
+): string => (time ? formatInTimeZone(time, timeZone, timeFormat) : '')
 
 const filterOutExtraTimezones = ({ id }: TimezoneV2) =>
 	id && !id.startsWith('Etc/')
