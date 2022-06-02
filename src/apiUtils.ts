@@ -1,11 +1,19 @@
 import axiosRetry from 'axios-retry'
 import jsonmergepatch from 'json-merge-patch'
 import pick from 'lodash/pick'
+import { useRef } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
+import axios, {
+	AxiosError,
+	AxiosInstance,
+	AxiosRequestConfig,
+	CancelTokenSource
+} from 'axios'
 import { Emitter, ev } from './eventUtils'
 import { ErrorInfo, InternalError } from 'api'
 import ndjsonStream, { StreamedResponse } from 'can-ndjson-stream'
+
+const { CancelToken } = axios
 
 export const DASSANA_REQUEST_ID = 'x-dassana-request-id'
 export const TOKEN = 'token'
@@ -126,3 +134,20 @@ export const generatePatch = <T extends {}, U extends {}>({
 		pick(initialValues, Object.keys(fieldValues)),
 		fieldValues
 	) || {}) as U
+
+export const useCancelRequest = () => {
+	const cancelTokenRef = useRef<CancelTokenSource>(CancelToken.source())
+
+	const cancelPreviousRequest = () => {
+		cancelTokenRef.current.cancel('Request canceled')
+
+		cancelTokenRef.current = CancelToken.source()
+	}
+
+	const getCancelToken = () => cancelTokenRef.current.token
+
+	return {
+		cancelPreviousRequest,
+		getCancelToken
+	}
+}
