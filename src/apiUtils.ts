@@ -1,7 +1,6 @@
 import axiosRetry from 'axios-retry'
 import jsonmergepatch from 'json-merge-patch'
 import pick from 'lodash/pick'
-import { useRef } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import axios, {
 	AxiosError,
@@ -12,6 +11,7 @@ import axios, {
 import { Emitter, ev } from './eventUtils'
 import { ErrorInfo, InternalError } from 'api'
 import ndjsonStream, { StreamedResponse } from 'can-ndjson-stream'
+import { useCallback, useRef } from 'react'
 
 const { CancelToken } = axios
 
@@ -138,13 +138,13 @@ export const generatePatch = <T extends {}, U extends {}>({
 export const useCancelRequest = () => {
 	const cancelTokenRef = useRef<CancelTokenSource>(CancelToken.source())
 
-	const cancelPreviousRequest = () => {
+	const cancelPreviousRequest = useCallback(() => {
 		cancelTokenRef.current.cancel('Request canceled')
 
 		cancelTokenRef.current = CancelToken.source()
-	}
+	}, [])
 
-	const getCancelToken = () => cancelTokenRef.current.token
+	const getCancelToken = useCallback(() => cancelTokenRef.current.token, [])
 
 	return {
 		cancelPreviousRequest,
