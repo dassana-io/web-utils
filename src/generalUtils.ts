@@ -3,6 +3,7 @@ import pluralize from 'pluralize'
 import { JSONPath, JSONPathOptions } from 'jsonpath-plus'
 import { Options, parse } from 'json2csv'
 import queryString, { ParseOptions, StringifyOptions } from 'query-string'
+import { RefObject, useEffect, useRef, useState } from 'react'
 
 export const convertJSONToCsv = <T>(json: T[] | T, options?: Options<T>) =>
 	parse<T>(json, options)
@@ -124,3 +125,30 @@ export const pluralizeWord = (
 	count?: number,
 	showCount = false
 ) => pluralize(word, count, showCount)
+
+export const useHoverState = <T extends HTMLElement>(): [
+	RefObject<T>,
+	boolean
+] => {
+	const [value, setValue] = useState<boolean>(false)
+	const ref = useRef<T>(null)
+
+	const handleMouseOver = (): void => setValue(true)
+	const handleMouseOut = (): void => setValue(false)
+
+	useEffect(() => {
+		const node = ref.current
+
+		if (ref && node) {
+			node.addEventListener('mouseenter', handleMouseOver)
+			node.addEventListener('mouseleave', handleMouseOut)
+
+			return () => {
+				node.removeEventListener('mouseenter', handleMouseOver)
+				node.removeEventListener('mouseleave', handleMouseOut)
+			}
+		}
+	}, [ref.current]) // eslint-disable-line react-hooks/exhaustive-deps
+
+	return [ref, value]
+}
