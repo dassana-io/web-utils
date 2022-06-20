@@ -46,6 +46,11 @@ export const getAppEnv = () => {
 export const parseParamsString = (str: string, options: ParseOptions = {}) =>
 	queryString.parse(str, options)
 
+export const removeFromArrByIdx = <T>(arr: T[], index: number) => [
+	...arr.slice(0, index),
+	...arr.slice(index + 1)
+]
+
 export const sleep = async (ms: number) =>
 	await new Promise(resolve => setTimeout(resolve, ms))
 

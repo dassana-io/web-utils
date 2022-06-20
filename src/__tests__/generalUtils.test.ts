@@ -4,6 +4,7 @@ import {
 	convertJSONToCsv,
 	convertJSONToString,
 	parseParamsString,
+	removeFromArrByIdx,
 	stringifyParamsObject,
 	updateObjectValWithJSONPath
 } from '../generalUtils'
@@ -56,6 +57,24 @@ describe('parseParamsString', () => {
 		const paramsObj = parseParamsString(`?${mockParamsStr}`)
 
 		expect(paramsObj).toMatchObject(mockParamsObj)
+	})
+})
+
+describe('removeFromArrByIdx', () => {
+	it('should return an array with element removed', () => {
+		const mockArr = [1, 2, 3]
+
+		const updatedMockArr = removeFromArrByIdx(mockArr, 1)
+
+		expect(updatedMockArr).toMatchObject([1, 3])
+	})
+
+	it('should return an original array if index is invalid', () => {
+		const mockArr = [1, 2, 3]
+
+		const updatedMockArr = removeFromArrByIdx(mockArr, 3)
+
+		expect(updatedMockArr).toMatchObject([1, 2, 3])
 	})
 })
 

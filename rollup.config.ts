@@ -30,7 +30,7 @@ const config = {
 		}
 	],
 	plugins: [
-		resolve(),
+		resolve({ browser: true }),
 		commonjs(),
 		json(), // For moment-timezone
 		typescript({
