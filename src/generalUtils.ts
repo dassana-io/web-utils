@@ -1,5 +1,6 @@
 import isUndefined from 'lodash/isUndefined'
 import pluralize from 'pluralize'
+import bytes, { BytesOptions } from 'bytes'
 import { JSONPath, JSONPathOptions } from 'jsonpath-plus'
 import { Options, parse } from 'json2csv'
 import queryString, { ParseOptions, StringifyOptions } from 'query-string'
@@ -167,3 +168,6 @@ export const formatCurrency = (
 
 	return formatter.format(amount)
 }
+
+export const formatBytes = (value: number, options?: BytesOptions) =>
+	bytes(value, options)
