@@ -9,6 +9,7 @@ const config = {
 	external: [
 		'axios',
 		'axios-retry',
+		'bytes',
 		'json-merge-patch',
 		'jsonpath-plus',
 		'lodash',
