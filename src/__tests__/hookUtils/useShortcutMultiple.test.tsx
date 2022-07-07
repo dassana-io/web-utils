@@ -1,6 +1,5 @@
-import { act } from '@testing-library/react-hooks'
 import React from 'react'
-import { fireEvent, render } from '@testing-library/react'
+import { act, fireEvent, render } from '@testing-library/react'
 import { useShortcut, UseShortcutConfig } from '../../hookUtils'
 
 const onKeyEventCbSpy = jest.fn()

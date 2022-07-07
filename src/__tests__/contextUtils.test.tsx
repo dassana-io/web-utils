@@ -1,5 +1,5 @@
 import { createCtx } from '../contextUtils'
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react'
 import React, { ReactNode } from 'react'
 
 interface FooCtxType {
@@ -13,19 +13,24 @@ interface TestProviderProps {
 
 const [useFooCtx, FooProvider] = createCtx<FooCtxType>()
 
-const getWrapperComponent = (initialValues?: FooCtxType) => ({
-	children
-}: TestProviderProps) => (
-	<FooProvider value={initialValues}>{children}</FooProvider>
-)
+const getWrapperComponent =
+	(initialValues?: FooCtxType) =>
+	({ children }: TestProviderProps) =>
+		<FooProvider value={initialValues}>{children}</FooProvider>
 
 let wrapper: React.FC<TestProviderProps>
 
 describe('createCtx', () => {
 	it('throws an error if initial values are not provided', () => {
-		wrapper = getWrapperComponent()
+		try {
+			wrapper = getWrapperComponent()
 
-		renderHook(() => expect(useFooCtx()).toThrow(), { wrapper })
+			renderHook(() => useFooCtx(), { wrapper })
+		} catch (error: any) {
+			expect(error.message).toBe(
+				'useCtx must be inside a Provider with a value'
+			)
+		}
 	})
 
 	it('uses custom hook if initial values are provided', () => {

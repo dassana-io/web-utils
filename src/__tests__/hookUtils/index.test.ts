@@ -1,5 +1,5 @@
 import { initializeLocalStorageMock } from '../../testUtils'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react'
 import { Emitter, EmitterEventTypes } from '../../eventUtils'
 import {
 	ThemeType,
