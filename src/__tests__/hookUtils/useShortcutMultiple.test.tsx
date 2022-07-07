@@ -1,10 +1,7 @@
 import { act } from '@testing-library/react-hooks'
-import { fireEvent } from '@testing-library/react'
 import React from 'react'
-import { mount, ReactWrapper } from 'enzyme'
+import { fireEvent, render } from '@testing-library/react'
 import { useShortcut, UseShortcutConfig } from '../../hookUtils'
-
-let wrapper: ReactWrapper
 
 const onKeyEventCbSpy = jest.fn()
 jest.spyOn(window, 'addEventListener')
@@ -25,25 +22,11 @@ describe('useShortcut', () => {
 		}
 
 		beforeEach(() => {
-			wrapper = mount(<MockComponent />)
+			render(<MockComponent />)
 		})
 
 		afterEach(() => {
 			jest.clearAllMocks()
-		})
-
-		it('removes the keydown and keyup event listener when unmounted', () => {
-			wrapper.unmount()
-
-			expect(window.removeEventListener).toHaveBeenCalledWith(
-				'keydown',
-				expect.any(Function)
-			)
-
-			expect(window.removeEventListener).toHaveBeenCalledWith(
-				'keyup',
-				expect.any(Function)
-			)
 		})
 
 		it('adds a keydown and keyup event listener on mount', () => {
@@ -53,6 +36,22 @@ describe('useShortcut', () => {
 			)
 
 			expect(window.addEventListener).toHaveBeenCalledWith(
+				'keyup',
+				expect.any(Function)
+			)
+		})
+
+		it('removes the keydown and keyup event listener when unmounted', () => {
+			const { unmount } = render(<MockComponent />)
+
+			unmount()
+
+			expect(window.removeEventListener).toHaveBeenCalledWith(
+				'keydown',
+				expect.any(Function)
+			)
+
+			expect(window.removeEventListener).toHaveBeenCalledWith(
 				'keyup',
 				expect.any(Function)
 			)
@@ -99,10 +98,6 @@ describe('useShortcut', () => {
 
 				return <div />
 			}
-
-			wrapper = mount(<MockComponent />)
-
-			wrapper.update()
 
 			act(() => {
 				fireEvent.keyDown(window, {

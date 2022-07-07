@@ -1,9 +1,7 @@
 import { act } from '@testing-library/react-hooks'
 import React from 'react'
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import { useShortcut, UseShortcutConfig } from '../../hookUtils'
-
-let wrapper: ReactWrapper
 
 const onKeyEventCbSpy = jest.fn()
 jest.spyOn(window, 'addEventListener')
@@ -25,7 +23,7 @@ describe('useShortcut', () => {
 		}
 
 		beforeEach(() => {
-			wrapper = mount(<MockComponent />)
+			render(<MockComponent />)
 		})
 
 		afterEach(() => {
@@ -33,7 +31,8 @@ describe('useShortcut', () => {
 		})
 
 		it('removes the keydown event listener when unmounted', () => {
-			wrapper.unmount()
+			const { unmount } = render(<MockComponent />)
+			unmount()
 
 			expect(window.removeEventListener).toHaveBeenCalledWith(
 				'keydown',
@@ -85,10 +84,6 @@ describe('useShortcut', () => {
 
 				return <div />
 			}
-
-			wrapper = mount(<MockComponent />)
-
-			wrapper.update()
 
 			act(() => {
 				dispatchEvent(
