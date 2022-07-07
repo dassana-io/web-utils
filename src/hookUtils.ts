@@ -1,7 +1,6 @@
 import capitalize from 'lodash/capitalize'
 import noop from 'lodash/noop'
 import { OperatingSystems } from 'types'
-import { unstable_batchedUpdates } from 'react-dom'
 import { Breakpoints, modifierKeysMap, WindowSize } from './constants'
 import { Emitter, EmitterEventTypes } from 'eventUtils'
 import {
@@ -406,29 +405,21 @@ export const useStopwatch = (interval = 10): UseStopwatch => {
 
 	const stopwatchInterval = useRef<NodeJS.Timeout>()
 
-	const startStopwatch = useCallback(
-		(reset?: boolean) =>
-			unstable_batchedUpdates(() => {
-				if (reset) setTime(0)
+	const startStopwatch = useCallback((reset?: boolean) => {
+		if (reset) setTime(0)
 
-				setIsActive(true)
-				setIsPaused(false)
-			}),
-		[]
-	)
+		setIsActive(true)
+		setIsPaused(false)
+	}, [])
 
 	const pauseStopwatch = useCallback(() => setIsPaused(true), [])
 	const resumeStopwatch = useCallback(() => setIsPaused(false), [])
 
-	const resetStopwatch = useCallback(
-		() =>
-			unstable_batchedUpdates(() => {
-				setIsActive(false)
-				setIsPaused(true)
-				setTime(0)
-			}),
-		[]
-	)
+	const resetStopwatch = useCallback(() => {
+		setIsActive(false)
+		setIsPaused(true)
+		setTime(0)
+	}, [])
 
 	useEffect(() => {
 		const currStopwatchInterval = stopwatchInterval.current
