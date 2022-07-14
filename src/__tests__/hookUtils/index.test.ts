@@ -4,6 +4,7 @@ import { Emitter, EmitterEventTypes } from '../../eventUtils'
 import {
 	ThemeType,
 	useDebounce,
+	useIsJSONStrValid,
 	usePrevious,
 	useQueryParams,
 	useTheme
@@ -61,6 +62,30 @@ describe('useDebounce', () => {
 		unmount()
 
 		expect(clearTimeout).toHaveBeenCalledTimes(1)
+	})
+})
+
+describe('useIsJSONStrValid', () => {
+	const initializeHook = (jsonStr: string, cb?: () => void) =>
+		renderHook(() => useIsJSONStrValid(jsonStr, cb))
+
+	it('should return false for invalid json', () => {
+		const { result } = initializeHook('foo')
+
+		expect(result.current).toBeFalsy()
+	})
+
+	it('should return true for invalid json', () => {
+		const { result } = initializeHook('{"foo":"bar"}')
+
+		expect(result.current).toBe(true)
+	})
+
+	it('should invoke the callback on success if one is passed in', () => {
+		const mockCb = jest.fn()
+		initializeHook('{"foo":"bar"}', mockCb)
+
+		expect(mockCb).toHaveBeenCalled()
 	})
 })
 
