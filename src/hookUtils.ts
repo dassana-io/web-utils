@@ -176,6 +176,29 @@ export const useInView = () => {
 
 // -----------------------------------
 
+export const useIsJSONStrValid = (
+	jsonStr: string,
+	cb?: (json: Record<string, any>) => void
+) => {
+	const [jsonIsValid, setJsonIsValid] = useState(false)
+
+	useEffect(() => {
+		try {
+			const parsedJson = JSON.parse(jsonStr)
+
+			setJsonIsValid(true)
+
+			if (cb) cb(parsedJson)
+		} catch (error: any) {
+			setJsonIsValid(false)
+		}
+	}, [cb, jsonStr])
+
+	return jsonIsValid
+}
+
+// -----------------------------------
+
 export const usePrevious = <T>(state: T): T | undefined => {
 	const ref = useRef<T>()
 
