@@ -35,6 +35,7 @@ export enum Services {
 	appStore = 'appStore',
 	billing = 'billing',
 	detections = 'detections',
+	findings = 'findings',
 	integrations = 'integrations',
 	notificationRules = 'notificationRules',
 	onboarding = 'onboarding',
