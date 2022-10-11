@@ -2,7 +2,7 @@
 const { exec } = require('child_process')
 const fs = require('fs')
 
-const apiServices = ['global', 'profile']
+const apiServices = ['global', 'preferences', 'profile']
 
 apiServices.forEach(service => {
 	if (fs.existsSync(`${service}Api`)) {
