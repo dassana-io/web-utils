@@ -49,15 +49,27 @@ export const api: (apiUrl?: string) => AxiosInstance = (apiUrl = '') => {
 	return apiClient
 }
 
-export const handleAjaxErrors = (
-	error: AxiosError<ErrorTypes>,
-	emitter: Emitter
-): void => {
+interface InternalEmbeddedError {
+	message: string
+}
+
+export const handleAjaxErrors = (error: any, emitter: Emitter): void => {
 	if (axios.isCancel(error)) return
 
 	if (error.response) {
-		const { key, msg } = error.response.data
-		const message = msg ? msg : key
+		const { _embedded, key, msg } = error.response.data
+
+		let message = msg ? msg : key
+
+		if (_embedded) {
+			const { errors = [] } = _embedded
+
+			if (errors.length) {
+				message = errors
+					.map(({ message }: InternalEmbeddedError) => message)
+					.join(', ')
+			}
+		}
 
 		return emitter.emitNotificationEvent(
 			ev.error,
