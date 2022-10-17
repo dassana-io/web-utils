@@ -40,6 +40,7 @@ export enum Services {
 	notificationRules = 'notificationRules',
 	onboarding = 'onboarding',
 	orgManager = 'orgManager',
+	preferences = 'preferences',
 	profile = 'profile',
 	query = 'query',
 	visualize = 'visualize'
