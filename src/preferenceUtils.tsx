@@ -1,6 +1,7 @@
 import { api } from 'apiUtils'
 import { createCtx } from 'contextUtils'
 import { Services } from 'types'
+import { unstable_batchedUpdates } from 'react-dom'
 import {
 	ConfigKey,
 	ConfigObject,
@@ -34,6 +35,8 @@ interface Props {
 }
 
 const PreferencesProvider = ({ children, feature, serviceMap }: Props) => {
+	const [preferencesLoaded, setPreferencesLoaded] = useState(false)
+
 	const preferencesApi = useMemo(
 		() =>
 			api(
@@ -46,17 +49,25 @@ const PreferencesProvider = ({ children, feature, serviceMap }: Props) => {
 
 	const [preferences, setPreferences] = useState<ConfigObject>({})
 
-	const fetchPreferences = useCallback(async () => {
-		try {
-			const { data } = await preferencesApi.get<ConfigObject>(
-				PREFERENCES_API(feature)
-			)
+	const fetchPreferences = useCallback(
+		async (firstLoad = false) => {
+			try {
+				const { data } = await preferencesApi.get<ConfigObject>(
+					PREFERENCES_API(feature)
+				)
 
-			setPreferences(data)
-		} catch (error: any) {
-			console.log(error)
-		}
-	}, [feature, preferencesApi])
+				unstable_batchedUpdates(() => {
+					if (firstLoad) setPreferencesLoaded(true)
+					setPreferences(data)
+				})
+			} catch (error: any) {
+				console.log(error)
+
+				if (firstLoad) setPreferencesLoaded(true)
+			}
+		},
+		[feature, preferencesApi]
+	)
 
 	const resetPreferences = useCallback(async () => {
 		try {
@@ -100,7 +111,7 @@ const PreferencesProvider = ({ children, feature, serviceMap }: Props) => {
 	)
 
 	useEffect(() => {
-		fetchPreferences()
+		fetchPreferences(true)
 	}, [fetchPreferences])
 
 	return (
@@ -112,7 +123,7 @@ const PreferencesProvider = ({ children, feature, serviceMap }: Props) => {
 				updatePreferences
 			}}
 		>
-			{children}
+			{preferencesLoaded && children}
 		</PreferencesContextProvider>
 	)
 }
