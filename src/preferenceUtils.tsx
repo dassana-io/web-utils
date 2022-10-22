@@ -1,6 +1,7 @@
 import { api } from 'apiUtils'
 import { createCtx } from 'contextUtils'
 import { Services } from 'types'
+import { unstable_batchedUpdates } from 'react-dom'
 import {
 	ConfigKey,
 	ConfigObject,
@@ -10,7 +11,6 @@ import {
 	Service
 } from 'api'
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
-import { unstable_batchedUpdates } from 'react-dom'
 
 const defaultPreferencesUrl = 'https://preferences.dassana.dev'
 
