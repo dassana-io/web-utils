@@ -10,23 +10,35 @@ import {
 	PREFERENCES_BY_CONFIG_KEY,
 	Service
 } from 'api'
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
+import {
+	ReactNode,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState
+} from 'react'
 
 const defaultPreferencesUrl = 'https://preferences.dassana.dev'
 
 export interface PreferencesContextProps {
-	deletePreferenceByConfigKey: (configKey: ConfigKey) => void
+	deletePreferenceByConfigKey: (configKey: ConfigKey) => Promise<void>
 	preferences: ConfigObject
-	resetPreferences: () => void
+	resetPreferences: () => Promise<void>
 	updatePreferences: (
 		configKey: ConfigKey,
 		value: ConfigObject,
 		feature?: Feature
-	) => void
+	) => Promise<void>
 }
 
 const [usePreferences, PreferencesContextProvider] =
 	createCtx<PreferencesContextProps>()
+
+interface PreferenceId {
+	configKey: string
+	feat: string
+}
 
 interface Props {
 	children: ReactNode
@@ -35,6 +47,9 @@ interface Props {
 }
 
 const PreferencesProvider = ({ children, feature, serviceMap }: Props) => {
+	const controller = useRef(new AbortController())
+	const lastPrefCall = useRef<PreferenceId>({ configKey: '', feat: '' })
+
 	const [preferencesLoaded, setPreferencesLoaded] = useState(false)
 
 	const preferencesApi = useMemo(
@@ -73,7 +88,7 @@ const PreferencesProvider = ({ children, feature, serviceMap }: Props) => {
 		try {
 			await preferencesApi.delete(PREFERENCES_API(feature))
 
-			fetchPreferences()
+			await fetchPreferences()
 		} catch (error: any) {
 			console.log(error)
 		}
@@ -86,7 +101,7 @@ const PreferencesProvider = ({ children, feature, serviceMap }: Props) => {
 					PREFERENCES_BY_CONFIG_KEY(feature, configKey)
 				)
 
-				fetchPreferences()
+				await fetchPreferences()
 			} catch (error: any) {
 				console.log(error)
 			}
@@ -96,15 +111,28 @@ const PreferencesProvider = ({ children, feature, serviceMap }: Props) => {
 
 	const updatePreferences = useCallback(
 		async (configKey: ConfigKey, value: ConfigObject, feat = feature) => {
+			const { configKey: prevConfigKey, feat: prevFeat } =
+				lastPrefCall.current
+
+			if (prevConfigKey === configKey && prevFeat === feat) {
+				controller.current.abort()
+
+				controller.current = new AbortController()
+			} else {
+				lastPrefCall.current.configKey = configKey
+				lastPrefCall.current.feat = feat
+			}
+
 			try {
 				await preferencesApi.put(
 					PREFERENCES_BY_CONFIG_KEY(feat, configKey),
-					value
+					value,
+					{ signal: controller.current.signal }
 				)
 
-				fetchPreferences()
+				await fetchPreferences()
 			} catch (error: any) {
-				console.log(error)
+				if (error.code !== 'ERR_CANCELED') console.log(error)
 			}
 		},
 		[feature, fetchPreferences, preferencesApi]
