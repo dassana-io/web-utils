@@ -65,6 +65,19 @@ const PreferencesProvider = ({ children, feature, serviceMap }: Props) => {
 
 	const [preferences, setPreferences] = useState<ConfigObject>({})
 
+	const fetchPreferenceByFeat = useCallback(
+		async (feat: string) => {
+			try {
+				const { data } = await preferencesApi.get(PREFERENCES_API(feat))
+
+				return data
+			} catch (error: any) {
+				return {}
+			}
+		},
+		[preferencesApi]
+	)
+
 	const fetchPreferences = useCallback(
 		async (firstLoad = false) => {
 			try {
