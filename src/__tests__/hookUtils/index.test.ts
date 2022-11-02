@@ -1,13 +1,10 @@
 import { initializeLocalStorageMock } from '../../testUtils'
-import { act, renderHook } from '@testing-library/react'
-import { Emitter, EmitterEventTypes } from '../../eventUtils'
+import { renderHook } from '@testing-library/react'
 import {
-	ThemeType,
 	useDebounce,
 	useIsJSONStrValid,
 	usePrevious,
-	useQueryParams,
-	useTheme
+	useQueryParams
 } from '../../hookUtils'
 
 const mockBrowserLocation = {
@@ -161,69 +158,5 @@ describe('useQueryParams', () => {
 		}
 
 		expect(params).toMatchObject(expected)
-	})
-})
-
-describe('useTheme', () => {
-	const emitter = new Emitter()
-
-	const offSpy = jest.spyOn(emitter, 'off')
-	const onSpy = jest.spyOn(emitter, 'on')
-
-	const initializeHook = () => renderHook(() => useTheme(emitter))
-
-	beforeEach(() => {
-		jest.clearAllMocks()
-	})
-
-	it('should return dark theme if there is no theme in localStorage', () => {
-		const { result } = initializeHook()
-
-		expect(result.current).toBe(ThemeType.dark)
-	})
-
-	it('should add emitter listener on mount and remove it on unmount', () => {
-		const { unmount } = initializeHook()
-
-		expect(onSpy).toHaveBeenCalledWith(
-			EmitterEventTypes.themeUpdated,
-			expect.any(Function)
-		)
-
-		unmount()
-
-		expect(offSpy).toHaveBeenCalledWith(
-			EmitterEventTypes.themeUpdated,
-			expect.any(Function)
-		)
-	})
-
-	it('should update the theme when the appropriate event is emitted', () => {
-		localStorage.setItem('theme', ThemeType.light)
-
-		const { result } = initializeHook()
-
-		expect(result.current).toBe(ThemeType.light)
-
-		act(() => {
-			localStorage.setItem('theme', ThemeType.dark)
-			emitter.emit(EmitterEventTypes.themeUpdated, ThemeType.dark)
-		})
-
-		expect(result.current).toBe(ThemeType.dark)
-	})
-
-	it('should not update the theme if the theme in local storage is the same as the one in state', () => {
-		localStorage.setItem('theme', ThemeType.light)
-
-		const { result } = initializeHook()
-
-		expect(result.current).toBe(ThemeType.light)
-
-		act(() => {
-			emitter.emit(EmitterEventTypes.themeUpdated, ThemeType.light)
-		})
-
-		expect(result.current).toBe(ThemeType.light)
 	})
 })

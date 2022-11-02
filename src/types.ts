@@ -50,3 +50,8 @@ export interface KeyMapConfig {
 	key: KeyboardEvent['key']
 	label: string
 }
+
+export enum GlobalPreferenceKeys {
+	mode = 'mode',
+	theme = 'theme'
+}

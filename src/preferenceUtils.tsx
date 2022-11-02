@@ -24,6 +24,7 @@ const defaultPreferencesUrl = 'https://preferences.dassana.dev'
 export interface PreferencesContextProps {
 	deletePreferenceByConfigKey: (configKey: ConfigKey) => Promise<void>
 	preferences: ConfigObject
+	refreshPreferences: () => Promise<void>
 	resetPreferences: () => Promise<void>
 	updatePreferences: (
 		configKey: ConfigKey,
@@ -64,16 +65,30 @@ const PreferencesProvider = ({ children, feature, serviceMap }: Props) => {
 
 	const [preferences, setPreferences] = useState<ConfigObject>({})
 
+	const fetchPreferenceByFeat = useCallback(
+		async (feat: string) => {
+			try {
+				const { data } = await preferencesApi.get(PREFERENCES_API(feat))
+
+				return data
+			} catch (error: any) {
+				return {}
+			}
+		},
+		[preferencesApi]
+	)
+
 	const fetchPreferences = useCallback(
 		async (firstLoad = false) => {
 			try {
-				const { data } = await preferencesApi.get<ConfigObject>(
-					PREFERENCES_API(feature)
-				)
+				const [featurePrefs, globalPrefs] = await Promise.all([
+					fetchPreferenceByFeat(feature),
+					fetchPreferenceByFeat(Services.preferences)
+				])
 
 				unstable_batchedUpdates(() => {
 					if (firstLoad) setPreferencesLoaded(true)
-					setPreferences(data)
+					setPreferences({ ...featurePrefs, ...globalPrefs })
 				})
 			} catch (error: any) {
 				console.log(error)
@@ -81,7 +96,7 @@ const PreferencesProvider = ({ children, feature, serviceMap }: Props) => {
 				if (firstLoad) setPreferencesLoaded(true)
 			}
 		},
-		[feature, preferencesApi]
+		[feature, fetchPreferenceByFeat]
 	)
 
 	const resetPreferences = useCallback(async () => {
@@ -147,6 +162,7 @@ const PreferencesProvider = ({ children, feature, serviceMap }: Props) => {
 			value={{
 				deletePreferenceByConfigKey,
 				preferences,
+				refreshPreferences: fetchPreferences,
 				resetPreferences,
 				updatePreferences
 			}}

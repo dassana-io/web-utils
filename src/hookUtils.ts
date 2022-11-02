@@ -1,8 +1,9 @@
 import capitalize from 'lodash/capitalize'
 import noop from 'lodash/noop'
-import { OperatingSystems } from 'types'
+import { usePreferences } from 'preferenceUtils'
 import { Breakpoints, modifierKeysMap, WindowSize } from './constants'
 import { Emitter, EmitterEventTypes } from 'eventUtils'
+import { GlobalPreferenceKeys, OperatingSystems } from 'types'
 import {
 	RefObject,
 	useCallback,
@@ -383,30 +384,28 @@ export enum ThemeType {
 }
 
 export const useTheme = (emitter: Emitter): ThemeType => {
-	const getLocalStorageTheme = () =>
-		(localStorage.getItem('theme') as ThemeType) || ThemeType.dark
-	const [theme, setTheme] = useState<ThemeType>(getLocalStorageTheme())
+	const { preferences } = usePreferences()
 
-	const onStorageUpdate = useCallback(() => {
-		const themeInStorage = getLocalStorageTheme()
+	const storedTheme = useMemo(
+		() =>
+			preferences[GlobalPreferenceKeys.theme]?.[
+				GlobalPreferenceKeys.mode
+			] || ThemeType.dark,
+		[preferences]
+	)
 
-		if (themeInStorage !== theme) {
-			setTheme(themeInStorage)
-		}
-	}, [theme])
+	const [theme, setTheme] = useState<ThemeType>(storedTheme)
 
-	useLayoutEffect(() => {
-		const theme = getLocalStorageTheme()
-
-		setTheme(theme)
-	}, [])
+	const onThemeUpdate = useCallback(
+		(newTheme: ThemeType) => setTheme(newTheme),
+		[]
+	)
 
 	useEffect(() => {
-		emitter.on(EmitterEventTypes.themeUpdated, onStorageUpdate)
+		emitter.on(EmitterEventTypes.themeUpdated, onThemeUpdate)
 
-		return () =>
-			emitter.off(EmitterEventTypes.themeUpdated, onStorageUpdate)
-	}, [emitter, onStorageUpdate])
+		return () => emitter.off(EmitterEventTypes.themeUpdated, onThemeUpdate)
+	}, [emitter, onThemeUpdate])
 
 	return theme
 }
