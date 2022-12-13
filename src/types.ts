@@ -9,6 +9,30 @@ export type DistributiveOmit<T, K extends keyof T> = T extends T
 	? Omit<T, K>
 	: never
 
+export enum FilterKeys {
+	assetContainerId = '$assetContainerId',
+	assetId = '$assetId',
+	assetType = '$assetType',
+	category = '$category',
+	class = '$class',
+	cloud = '$cloud',
+	criticality = '$criticality',
+	firstSeen = '$firstSeen',
+	isProd = '$isProd',
+	isSlaBreached = '$isSlaBreached',
+	lastSeen = '$lastSeen',
+	parentTeamName = '$parentTeamName',
+	parentTeamId = '$parentTeamId',
+	schema = '$schema',
+	severity = '$severity',
+	source = '$source',
+	status = '$status',
+	subclass = '$subclass',
+	teamId = '$teamId',
+	teamName = '$teamName',
+	time = '$time'
+}
+
 // Onboarding step number enum used in web-orchestrator and web-onboarding
 export enum OnboardingStepNum {
 	endUserLicenseAgreement = 1,
