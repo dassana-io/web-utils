@@ -171,3 +171,9 @@ export const formatCurrency = (
 
 export const formatBytes = (value: number, options?: BytesOptions) =>
 	bytes(value, options)
+
+export const abbreviateNumber = (value: number) =>
+	Intl.NumberFormat('en-US', {
+		maximumFractionDigits: 1,
+		notation: 'compact'
+	}).format(value)
