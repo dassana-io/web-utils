@@ -28,6 +28,7 @@ export enum FilterKeys {
 	source = '$source',
 	status = '$status',
 	subclass = '$subclass',
+	tags = '$tags',
 	teamId = '$teamId',
 	teamName = '$teamName',
 	time = '$time'
