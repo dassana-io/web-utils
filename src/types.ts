@@ -28,6 +28,7 @@ export enum FilterKeys {
 	namespace = '$namespace',
 	parentTeamName = '$parentTeamName',
 	parentTeamId = '$parentTeamId',
+	priority = '$priority',
 	ruleId = '$ruleId',
 	ruleName = '$ruleName',
 	schema = '$schema',
