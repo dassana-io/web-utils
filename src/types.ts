@@ -20,6 +20,7 @@ export enum FilterKeys {
 	cloud = '$cloud',
 	cluster = '$cluster',
 	criticality = '$criticality',
+	criticality_severity = 'criticality_severity',
 	cveId = '$cveId',
 	firstSeen = '$firstSeen',
 	isProd = '$isProd',
