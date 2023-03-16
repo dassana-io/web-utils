@@ -177,3 +177,6 @@ export const abbreviateNumber = (value: number) =>
 		maximumFractionDigits: 1,
 		notation: 'compact'
 	}).format(value)
+
+export const prettifyNumber = (value: number): string =>
+	value.toLocaleString('en-US')
