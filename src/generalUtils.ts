@@ -180,3 +180,17 @@ export const abbreviateNumber = (value: number) =>
 
 export const prettifyNumber = (value: number): string =>
 	value.toLocaleString('en-US')
+
+export const processURLSearchParams = (params: URLSearchParams) => {
+	const processedParams: Record<string, string[]> = {}
+
+	for (const [key, value] of params) {
+		if (processedParams[key]) {
+			processedParams[key].push(value)
+		} else {
+			processedParams[key] = [value]
+		}
+	}
+
+	return processedParams
+}
