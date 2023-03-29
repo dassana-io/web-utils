@@ -1,5 +1,6 @@
 import capitalize from 'lodash/capitalize'
 import noop from 'lodash/noop'
+import { processURLSearchParams } from 'generalUtils'
 import { usePreferences } from 'preferenceUtils'
 import { Breakpoints, modifierKeysMap, WindowSize } from './constants'
 import { Emitter, EmitterEventTypes } from 'eventUtils'
@@ -356,19 +357,7 @@ export const useQueryParams = <T extends string>() => {
 		return null
 	}
 
-	const getAllParams = () => {
-		const params: Record<string, string[]> = {}
-
-		for (const [key, value] of query) {
-			if (params[key]) {
-				params[key].push(value)
-			} else {
-				params[key] = [value]
-			}
-		}
-
-		return params
-	}
+	const getAllParams = () => processURLSearchParams(query)
 
 	return {
 		getParam,
