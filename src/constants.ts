@@ -20,23 +20,29 @@ export enum LocalStorage {
 export enum Breakpoints {
 	mobile = 480,
 	tablet = 834,
-	largeScreen = 1440
+	smallScreen = 1440,
+	mediumScreen = 1512,
+	largeScreen = 1728
 }
 
 const getMediaSelector = (breakpoint: Breakpoints, isMax?: boolean) =>
 	`@media screen and (${isMax ? 'max' : 'min'}-width: ${breakpoint}px)`
 
-const { largeScreen, mobile, tablet } = Breakpoints
+const { largeScreen, mediumScreen, mobile, smallScreen, tablet } = Breakpoints
 
 export const mediaSelectorsWithBreakpoints = {
 	max: {
 		[largeScreen]: getMediaSelector(largeScreen, true),
+		[mediumScreen]: getMediaSelector(mediumScreen, true),
 		[mobile]: getMediaSelector(mobile, true),
+		[smallScreen]: getMediaSelector(smallScreen, true),
 		[tablet]: getMediaSelector(tablet, true)
 	},
 	min: {
 		[largeScreen]: getMediaSelector(largeScreen),
+		[mediumScreen]: getMediaSelector(mediumScreen),
 		[mobile]: getMediaSelector(mobile),
+		[smallScreen]: getMediaSelector(smallScreen),
 		[tablet]: getMediaSelector(tablet)
 	}
 }
