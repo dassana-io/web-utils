@@ -1,4 +1,4 @@
-import { endsWith } from 'lodash'
+import endsWith from 'lodash/endsWith'
 import has from 'lodash/has'
 import startCase from 'lodash/startCase'
 import { KeyMapConfig, ModifierKeys, OperatingSystems } from 'types'
