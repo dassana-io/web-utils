@@ -1,3 +1,6 @@
+import endsWith from 'lodash/endsWith'
+import has from 'lodash/has'
+import startCase from 'lodash/startCase'
 import { KeyMapConfig, ModifierKeys, OperatingSystems } from 'types'
 
 /* https://stackoverflow.com/a/67535345 */
@@ -91,4 +94,18 @@ export const modifierKeysMap: Record<
 			label: 'Shift'
 		}
 	}
+}
+
+const filterKeyMap: Record<string, string> = {
+	isSlaBreached: 'Is SLA Breached'
+}
+
+export const getFilterKeyLabel = (key: string): string => {
+	const processedKey = key.replace(/[^a-zA-Z ]/g, '')
+
+	if (has(filterKeyMap, processedKey)) return filterKeyMap[processedKey]
+
+	return startCase(
+		endsWith(key, 'Id') ? processedKey.replace(/Id/i, 'ID') : processedKey
+	)
 }
