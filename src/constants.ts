@@ -97,6 +97,9 @@ export const modifierKeysMap: Record<
 }
 
 const filterKeyMap: Record<string, string> = {
+	criticality_severity: 'Criticality - Severity',
+	isCveExploitable: 'Is CVE Exploitable',
+	isCveTrending: 'Is CVE Trending',
 	isSlaBreached: 'Is SLA Breached'
 }
 

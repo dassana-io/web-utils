@@ -1,8 +1,8 @@
-import { formatDistanceToNowStrict } from 'date-fns'
 import { formatInTimeZone } from 'date-fns-tz'
 import he from 'he'
 import sortBy from 'lodash/sortBy'
 import { TimezoneV2 } from 'api/profile'
+import { formatDistanceToNowStrict, sub } from 'date-fns'
 
 export const convertEpochToRelativeTime = (time: number) =>
 	formatDistanceToNowStrict(time, { addSuffix: true })
@@ -61,3 +61,8 @@ export const sortTimezones = (
 		timezones.filter(filterOutExtraTimezones).map(mapTimezoneOptions),
 		factor
 	)
+
+export const subtractDurationFromDate = (
+	date: Date | number,
+	duration: Duration
+) => sub(date, duration)
