@@ -103,3 +103,7 @@ export enum StaticWidgetIds {
 	findingsTable = 'findingsTable',
 	queryTable = 'queryTable'
 }
+
+export enum QueryParams {
+	forPDF = 'forPDF'
+}
