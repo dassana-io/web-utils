@@ -89,3 +89,17 @@ export enum GlobalPreferenceKeys {
 	mode = 'mode',
 	theme = 'theme'
 }
+
+export enum StaticWidgetIds {
+	execDashboardSlaBreaches = 'execDashboardSlaBreaches',
+	execDashboardFindingsByClassification = 'execDashboardFindingsByClassification',
+	execDashboardFindingsByPriority = 'execDashboardFindingsByPriority',
+	execDashboardMttrByPriority = 'execDashboardMttrByPriority',
+	execDashboardMttrByStatus = 'execDashboardMttrByStatus',
+	findingsCategory = 'findingsCategory',
+	findingsClassification = 'findingsClassification',
+	findingsPriority = 'findingsPriority',
+	findingsSources = 'findingsSources',
+	findingsTable = 'findingsTable',
+	queryTable = 'queryTable'
+}
