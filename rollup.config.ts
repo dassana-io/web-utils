@@ -10,6 +10,7 @@ const config = {
 		'axios',
 		'axios-retry',
 		'bytes',
+		'idb-keyval',
 		'json-merge-patch',
 		'jsonpath-plus',
 		'lodash',
