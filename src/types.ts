@@ -25,6 +25,7 @@ export enum FilterKeys {
 	firstSeen = '$firstSeen',
 	isProd = '$isProd',
 	isSlaBreached = '$isSlaBreached',
+	isTeamAssigned = '$isTeamAssigned',
 	lastSeen = '$lastSeen',
 	namespace = '$namespace',
 	parentTeamName = '$parentTeamName',
