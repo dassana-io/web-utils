@@ -1,3 +1,4 @@
+import intersection from 'lodash/intersection'
 import isUndefined from 'lodash/isUndefined'
 import pluralize from 'pluralize'
 import bytes, { BytesOptions } from 'bytes'
@@ -194,3 +195,19 @@ export const processURLSearchParams = (params: URLSearchParams) => {
 
 	return processedParams
 }
+
+export const findCommonItemsInArrays = <T>(arr1: T[], arr2: T[]) =>
+	intersection(arr1, arr2)
+
+export const allItemsInFirstArrExistInSecondArr = <T>(arr1: T[], arr2: T[]) =>
+	findCommonItemsInArrays(arr1, arr2).length === arr1.length
+
+export const removeItemsFromArray = <T>(
+	arr: T[],
+	itemsToRemove: T | T[]
+): T[] =>
+	arr.filter(item =>
+		Array.isArray(itemsToRemove)
+			? !itemsToRemove.includes(item)
+			: item !== itemsToRemove
+	)
