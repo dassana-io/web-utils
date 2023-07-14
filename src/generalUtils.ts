@@ -1,3 +1,4 @@
+import castArray from 'lodash/castArray'
 import intersection from 'lodash/intersection'
 import isUndefined from 'lodash/isUndefined'
 import pluralize from 'pluralize'
@@ -52,6 +53,20 @@ export const removeFromArrByIdx = <T>(arr: T[], index: number) => [
 	...arr.slice(0, index),
 	...arr.slice(index + 1)
 ]
+
+export const removeQueryParamFromUrl = (paramsToDelete: string | string[]) => {
+	paramsToDelete = castArray(paramsToDelete)
+
+	const { hash, origin, pathname, search } = window.location
+
+	const params = new URLSearchParams(search)
+
+	paramsToDelete.forEach(paramToDelete => params.delete(paramToDelete))
+
+	const newUrl = `${origin}${pathname}?${params}${hash}`
+
+	window.history.pushState(null, '', newUrl)
+}
 
 export const sleep = async (ms: number) =>
 	await new Promise(resolve => setTimeout(resolve, ms))
