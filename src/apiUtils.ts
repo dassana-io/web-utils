@@ -3,7 +3,6 @@ import jsonmergepatch from 'json-merge-patch'
 import pick from 'lodash/pick'
 import { v4 as uuidv4 } from 'uuid'
 import axios, {
-	AxiosError,
 	AxiosInstance,
 	AxiosRequestConfig,
 	CancelTokenSource

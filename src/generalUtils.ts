@@ -4,12 +4,18 @@ import isUndefined from 'lodash/isUndefined'
 import pluralize from 'pluralize'
 import bytes, { BytesOptions } from 'bytes'
 import { JSONPath, JSONPathOptions } from 'jsonpath-plus'
-import { Options, parse } from 'json2csv'
+import { Parser, ParserOptions } from '@json2csv/plainjs'
 import queryString, { ParseOptions, StringifyOptions } from 'query-string'
 import { RefObject, useEffect, useRef, useState } from 'react'
 
-export const convertJSONToCsv = <T>(json: T[] | T, options?: Options<T>) =>
-	parse<T>(json, options)
+export const convertJSONToCsv = <T extends object>(
+	json: T | T[],
+	options?: ParserOptions<T | T[]>
+) => {
+	const parser = new Parser(options)
+
+	return parser.parse(json)
+}
 
 export const convertJSONToString = (json: Record<string, any>) =>
 	JSON.stringify(json, null, 2)
