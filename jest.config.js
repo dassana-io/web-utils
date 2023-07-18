@@ -1,7 +1,11 @@
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
-	collectCoverageFrom: ['lib/**/*.{ts,tsx,js,jsx}'],
-	coverageDirectory: 'coverage',
+	moduleDirectories: ['node_modules', 'src'],
 	preset: 'ts-jest',
-	restoreMocks: true,
-	testEnvironment: 'node'
+	roots: ['<rootDir>/src/'],
+	testEnvironment: 'jsdom',
+	moduleNameMapper: {
+		'^uuid$': require.resolve('uuid'),
+		'^jsonpath-plus$': require.resolve('jsonpath-plus')
+	}
 }

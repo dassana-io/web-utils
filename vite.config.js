@@ -6,6 +6,11 @@ export default defineConfig(() => {
 		build: {
 			outDir: 'build'
 		},
-		plugins: [react()]
+		plugins: [react()],
+		resolve: {
+			alias: {
+				'~': path.resolve(__dirname, 'src')
+			}
+		}
 	}
 })

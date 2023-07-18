@@ -1,8 +1,14 @@
+/* eslint-env node */
+
 module.exports = {
+	root: true,
+	env: { browser: true, es2020: true },
 	extends: [
 		'react-app',
 		'eslint:recommended',
-		'plugin:@typescript-eslint/recommended' // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+		'plugin:@typescript-eslint/recommended',
+		'plugin:@typescript-eslint/recommended-requiring-type-checking',
+		'plugin:react-hooks/recommended'
 	],
 	globals: {
 		console: true,
@@ -11,18 +17,20 @@ module.exports = {
 		window: true
 	},
 	ignorePatterns: ['src/api/*/'],
-	parser: '@typescript-eslint/parser', // Specifies the ESLint parser
+	parser: '@typescript-eslint/parser',
 	parserOptions: {
-		ecmaFeatures: {
-			modules: true
-		},
-		ecmaVersion: 2020, // Allows for the parsing of modern ECMAScript features
-		sourceType: 'module' // Allows for the use of imports
+		ecmaVersion: 'latest',
+		sourceType: 'module',
+		project: true,
+		tsconfigRootDir: __dirname
 	},
-	plugins: ['@typescript-eslint'],
+	plugins: ['react-refresh'],
 	rules: {
-		// Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
-		// e.g. "@typescript-eslint/explicit-function-return-type": "off",
+		'react-refresh/only-export-components': [
+			'warn',
+			{ allowConstantExport: true }
+		],
+		'@typescript-eslint/no-non-null-assertion': 'off',
 		'@typescript-eslint/ban-ts-comment': 'off',
 		'@typescript-eslint/ban-types': 'off',
 		'@typescript-eslint/camelcase': 'off',
@@ -33,7 +41,7 @@ module.exports = {
 		'@typescript-eslint/no-extra-semi': 'off',
 		'@typescript-eslint/no-non-null-assertion': 'off',
 		'@typescript-eslint/no-unused-expressions': 'off',
-		'@typescript-eslint/no-unused-vars': 'off',
+		'@typescript-eslint/no-unused-vars': 'warn',
 		'comma-dangle': ['warn', 'never'],
 		'comma-spacing': ['warn', { after: true, before: false }],
 		'key-spacing': [
@@ -43,7 +51,6 @@ module.exports = {
 				beforeColon: false
 			}
 		],
-		'no-debugger': 'warn',
 		'no-duplicate-imports': 'error',
 		'no-useless-computed-key': 'warn',
 		'quote-props': ['warn', 'as-needed'],
