@@ -1,6 +1,6 @@
-import { FieldInfo, Options } from 'json2csv'
+import { FieldInfo, ParserOptions } from '@json2csv/plainjs'
 
-export type { FieldInfo, Options }
+export type { FieldInfo, ParserOptions }
 
 /**
  * More info on Distributive Conditional Types: https://stackoverflow.com/a/57103940/11279811
