@@ -9,7 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { FirstName } from './firstName'
+import { type FirstName } from './firstName'
 import { LastName } from './lastName'
 
 export interface UserName extends FirstName {

@@ -9,7 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { BaseProfile } from './baseProfile'
+import { type BaseProfile } from './baseProfile'
 import { Persona } from './persona'
 import { Timezone } from './timezone'
 

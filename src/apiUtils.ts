@@ -3,13 +3,13 @@ import jsonmergepatch from 'json-merge-patch'
 import pick from 'lodash/pick'
 import { v4 as uuidv4 } from 'uuid'
 import axios, {
-	AxiosInstance,
-	AxiosRequestConfig,
-	CancelTokenSource
+	type AxiosInstance,
+	type AxiosRequestConfig,
+	type CancelTokenSource
 } from 'axios'
-import { Emitter, ev } from './eventUtils'
-import { ErrorInfo, InternalError } from 'api'
-import ndjsonStream, { StreamedResponse } from 'can-ndjson-stream'
+import { type Emitter, ev } from './eventUtils'
+import { type ErrorInfo, type InternalError } from 'api'
+import ndjsonStream, { type StreamedResponse } from 'can-ndjson-stream'
 import { useCallback, useRef } from 'react'
 
 const { CancelToken } = axios
@@ -58,7 +58,7 @@ export const handleAjaxErrors = (error: any, emitter: Emitter): void => {
 	if (error.response) {
 		const { _embedded, key, msg } = error.response.data
 
-		let message = msg ? msg : key
+		let message = msg || key
 
 		if (_embedded) {
 			const { errors = [] } = _embedded
@@ -72,7 +72,7 @@ export const handleAjaxErrors = (error: any, emitter: Emitter): void => {
 
 		return emitter.emitNotificationEvent(
 			ev.error,
-			message ? message : JSON.stringify(error.response.data)
+			message || JSON.stringify(error.response.data)
 		)
 	} else {
 		return emitter.emitNotificationEvent(ev.error, error.message)
@@ -137,14 +137,17 @@ interface PatchInfo<T, U> {
 	initialValues: T
 }
 
-export const generatePatch = <T extends {}, U extends {}>({
+export const generatePatch = <
+	T extends Record<string, unknown>,
+	U extends Record<string, unknown>
+>({
 	initialValues,
 	fieldValues
 }: PatchInfo<T, U>): U =>
 	(jsonmergepatch.generate(
 		pick(initialValues, Object.keys(fieldValues)),
 		fieldValues
-	) || {}) as U
+	) ?? {}) as U
 
 export const useCancelRequest = () => {
 	const cancelTokenRef = useRef<CancelTokenSource>(CancelToken.source())

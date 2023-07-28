@@ -9,12 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Persona } from './persona'
-import { UserName } from './userName'
+import { type Persona } from './persona'
+import { type UserName } from './userName'
 import { WorkTimes } from './workTimes'
 
 export interface BaseProfileV2 extends UserName {
 	workStart?: number
 	workEnd?: number
-	personas?: Array<Persona>
+	personas?: Persona[]
 }

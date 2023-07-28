@@ -3,12 +3,12 @@ import { ev } from '../eventUtils'
 import { initializeLocalStorageMock } from '../testUtils'
 import {
 	api,
-	ErrorTypes,
+	type ErrorTypes,
 	generatePatch,
 	handleAjaxErrors,
 	TOKEN
 } from '../apiUtils'
-import axios, { AxiosStatic } from 'axios'
+import axios, { type AxiosStatic } from 'axios'
 
 jest.mock('axios', () => {
 	const mockAxios = jest.genMockFromModule<AxiosStatic>('axios') as any
@@ -152,7 +152,7 @@ describe('handleAjaxErrors', () => {
 			}
 		}
 
-		//@ts-ignore
+		// @ts-expect-error
 		handleAjaxErrors(mockErrorResponse, mockEmitter)
 
 		expect(mockEmitter.emitNotificationEvent).toHaveBeenCalledWith(
@@ -170,7 +170,7 @@ describe('handleAjaxErrors', () => {
 			}
 		}
 
-		//@ts-ignore
+		// @ts-expect-error
 		handleAjaxErrors(mockErrorResponse, mockEmitter)
 
 		expect(mockEmitter.emitNotificationEvent).toHaveBeenCalledWith(
@@ -182,7 +182,7 @@ describe('handleAjaxErrors', () => {
 	it('should emit an error notification with a stringified error if response does not exist', () => {
 		const mockError = new Error('Mock error')
 
-		//@ts-ignore
+		// @ts-expect-error
 		handleAjaxErrors(mockError, mockEmitter)
 
 		expect(mockEmitter.emitNotificationEvent).toHaveBeenCalledWith(
@@ -193,7 +193,7 @@ describe('handleAjaxErrors', () => {
 })
 
 describe('generatePatch', () => {
-	interface MockUser {
+	interface MockUser extends Record<string, unknown> {
 		firstName: string
 		id: string
 		lastName?: string

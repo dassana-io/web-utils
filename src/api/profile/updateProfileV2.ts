@@ -9,9 +9,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { BaseProfileV2 } from './baseProfileV2'
+import { type BaseProfileV2 } from './baseProfileV2'
 import { Persona } from './persona'
-import { TimezoneId } from './timezoneId'
+import { type TimezoneId } from './timezoneId'
 
 export interface UpdateProfileV2 extends BaseProfileV2 {
 	timezoneId?: TimezoneId

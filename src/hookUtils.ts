@@ -1,12 +1,11 @@
 import capitalize from 'lodash/capitalize'
 import noop from 'lodash/noop'
+import { OperatingSystems } from 'types'
 import { processURLSearchParams } from 'generalUtils'
-import { usePreferences } from 'preferenceUtils'
-import { Breakpoints, modifierKeysMap, WindowSize } from './constants'
-import { Emitter, EmitterEventTypes } from 'eventUtils'
-import { GlobalPreferenceKeys, OperatingSystems } from 'types'
+import { Breakpoints, modifierKeysMap, type WindowSize } from './constants'
+import { type Emitter, EmitterEventTypes } from 'eventUtils'
 import {
-	RefObject,
+	type RefObject,
 	useCallback,
 	useEffect,
 	useLayoutEffect,
@@ -35,8 +34,9 @@ export const useClickOutside = ({
 		}
 
 		const clickListener = (e: MouseEvent) => {
-			if (ref.current && !(ref.current as any).contains(e.target))
+			if (ref.current && !(ref.current as any).contains(e.target)) {
 				callback()
+			}
 		}
 
 		document.addEventListener('click', clickListener)
@@ -289,8 +289,9 @@ export const useShortcut = ({
 			const onKeyDown = (event: KeyboardEvent) => {
 				if (event.repeat) return
 
-				if (event.key === firstKey) setIsFirstKeyPressed(true)
-				else if (
+				if (event.key === firstKey) {
+					setIsFirstKeyPressed(true)
+				} else if (
 					isFirstKeyPressed &&
 					event.key === secondKey &&
 					additionalConditionalFn()
@@ -343,7 +344,7 @@ export const getKeyboardKeyAndLabel = (
 	}
 }
 
-export const isMacOS = () => window.navigator.userAgent.indexOf('Mac') > -1
+export const isMacOS = () => window.navigator.userAgent.includes('Mac')
 
 export const getModifierKeys = (keysArr: string[]) => {
 	const os = isMacOS() ? OperatingSystems.mac : OperatingSystems.windows
@@ -395,14 +396,9 @@ export enum ThemeType {
 }
 
 export const useTheme = (emitter: Emitter): ThemeType => {
-	const { preferences } = usePreferences()
-
 	const storedTheme = useMemo(
-		() =>
-			preferences[GlobalPreferenceKeys.theme]?.[
-				GlobalPreferenceKeys.mode
-			] || ThemeType.dark,
-		[preferences]
+		() => (localStorage.getItem('theme') as ThemeType) ?? ThemeType.dark,
+		[]
 	)
 
 	const [theme, setTheme] = useState<ThemeType>(storedTheme)

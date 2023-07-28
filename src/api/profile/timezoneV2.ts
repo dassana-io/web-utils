@@ -9,7 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { TimezoneId } from './timezoneId'
+import { type TimezoneId } from './timezoneId'
 
 export interface TimezoneV2 {
 	id?: TimezoneId

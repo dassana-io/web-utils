@@ -9,7 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { ErrorInfo } from './errorInfo'
+import { type ErrorInfo } from './errorInfo'
 
 /**
  * this object is used when Dassana encounterd an internal error.

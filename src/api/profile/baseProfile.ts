@@ -9,9 +9,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Persona } from './persona'
-import { Timezone } from './timezone'
-import { UserName } from './userName'
+import { type Persona } from './persona'
+import { type Timezone } from './timezone'
+import { type UserName } from './userName'
 import { WorkTimes } from './workTimes'
 
 export interface BaseProfile extends UserName {
@@ -19,5 +19,5 @@ export interface BaseProfile extends UserName {
 	workEnd?: number
 	timeZoneId?: string
 	timeZone?: Timezone
-	personas?: Array<Persona>
+	personas?: Persona[]
 }

@@ -82,8 +82,6 @@ describe('emitter', () => {
 		emitter.all.clear()
 		emitEvents()
 
-		emitter.all
-
 		expect(mockCallback).toHaveBeenCalledTimes(1)
 		expect(anotherMockCallback).toHaveBeenCalledTimes(1)
 	})
