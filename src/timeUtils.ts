@@ -1,7 +1,7 @@
 import { formatInTimeZone } from 'date-fns-tz'
 import he from 'he'
 import sortBy from 'lodash/sortBy'
-import { TimezoneV2 } from 'api/profile'
+import { type TimezoneV2 } from 'api/profile'
 import { formatDistanceToNowStrict, sub } from 'date-fns'
 
 export const convertEpochToRelativeTime = (time: number) =>

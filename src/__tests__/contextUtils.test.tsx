@@ -1,6 +1,6 @@
 import { createCtx } from '../contextUtils'
 import { renderHook } from '@testing-library/react'
-import React, { ReactNode } from 'react'
+import React, { type ReactNode } from 'react'
 
 interface FooCtxType {
 	foo: string

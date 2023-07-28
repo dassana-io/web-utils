@@ -1,5 +1,5 @@
 const localStorageMock = () => {
-	let storage: { [key: string]: string } = {}
+	let storage: Record<string, string> = {}
 
 	return {
 		clear: (): void => {

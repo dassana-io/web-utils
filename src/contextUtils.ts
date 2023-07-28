@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 
-/* 
+/*
 React's createContext expects an argument for the initial context value but often it doesn't make sense to pass a default. We initially pass undefined to get around this but things would break if a Provider didn't provide initial values. This function that wraps around createContext deals with the undefined check and returns a custom hook.
 src: https://www.carlrippon.com/react-context-with-typescript-p4/
 */
@@ -16,7 +16,7 @@ export const createCtx = <ContextType>() => {
 		const context = useContext(ctx)
 
 		if (!context)
-			throw new Error('useCtx must be inside a Provider with a value')
+			{ throw new Error('useCtx must be inside a Provider with a value') }
 
 		return context
 	}

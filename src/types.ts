@@ -1,4 +1,4 @@
-import { FieldInfo, ParserOptions } from '@json2csv/plainjs'
+import type { FieldInfo, ParserOptions } from '@json2csv/plainjs'
 
 export type { FieldInfo, ParserOptions }
 

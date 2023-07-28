@@ -2,11 +2,11 @@ import castArray from 'lodash/castArray'
 import intersection from 'lodash/intersection'
 import isUndefined from 'lodash/isUndefined'
 import pluralize from 'pluralize'
-import bytes, { BytesOptions } from 'bytes'
-import { JSONPath, JSONPathOptions } from 'jsonpath-plus'
-import { Parser, ParserOptions } from '@json2csv/plainjs'
-import queryString, { ParseOptions, StringifyOptions } from 'query-string'
-import { RefObject, useEffect, useRef, useState } from 'react'
+import bytes, { type BytesOptions } from 'bytes'
+import { JSONPath, type JSONPathOptions } from 'jsonpath-plus'
+import { Parser, type ParserOptions } from '@json2csv/plainjs'
+import queryString, { type ParseOptions, type StringifyOptions } from 'query-string'
+import { type RefObject, useEffect, useRef, useState } from 'react'
 
 export const convertJSONToCsv = <T extends object>(
 	json: T | T[],
@@ -20,16 +20,12 @@ export const convertJSONToCsv = <T extends object>(
 export const convertJSONToString = (json: Record<string, any>) =>
 	JSON.stringify(json, null, 2)
 
-interface CopyToClipboard {
-	(str: string, callback?: () => void): void
-}
+type CopyToClipboard = (str: string, callback?: () => void) => void
 
 export const copyToClipboard: CopyToClipboard = (str, callback) =>
 	window.navigator.clipboard.writeText(str).then(callback)
 
-interface DownloadBlob {
-	(blob: Blob, filename: string, callback?: () => void): void
-}
+type DownloadBlob = (blob: Blob, filename: string, callback?: () => void) => void
 export const downloadBlob: DownloadBlob = (blob, filename, callback) => {
 	const element = document.createElement('a')
 

@@ -3,15 +3,15 @@ import { createCtx } from 'contextUtils'
 import { Services } from 'types'
 import { unstable_batchedUpdates } from 'react-dom'
 import {
-	ConfigKey,
-	ConfigObject,
-	Feature,
+	type ConfigKey,
+	type ConfigObject,
+	type Feature,
 	PREFERENCES_API,
 	PREFERENCES_BY_CONFIG_KEY,
-	Service
+	type Service
 } from 'api'
-import {
-	ReactNode,
+import React, {
+	type ReactNode,
 	useCallback,
 	useEffect,
 	useMemo,
@@ -58,7 +58,7 @@ const PreferencesProvider = ({ children, feature, serviceMap }: Props) => {
 			api(
 				serviceMap.find(
 					({ serviceName }) => serviceName === Services.preferences
-				)?.apiUrl || defaultPreferencesUrl
+				)?.apiUrl ?? defaultPreferencesUrl
 			),
 		[serviceMap]
 	)

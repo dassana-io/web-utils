@@ -1,4 +1,4 @@
-import { ConfigKey, Feature } from './preferences'
+import { type ConfigKey, type Feature } from './preferences'
 
 export * from './global'
 export * from './serviceMap'

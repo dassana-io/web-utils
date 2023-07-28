@@ -1,6 +1,6 @@
 import React from 'react'
 import { act, render } from '@testing-library/react'
-import { useShortcut, UseShortcutConfig } from '../../hookUtils'
+import { useShortcut, type UseShortcutConfig } from '../../hookUtils'
 
 const onKeyEventCbSpy = jest.fn()
 jest.spyOn(window, 'addEventListener')
@@ -74,6 +74,7 @@ describe('useShortcut', () => {
 		it('should not invoke the key event callback function if the additional condition is not met', () => {
 			const mockFn = jest.fn()
 
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const MockComponent = () => {
 				useShortcut({
 					...options,
