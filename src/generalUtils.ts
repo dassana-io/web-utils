@@ -5,7 +5,10 @@ import pluralize from 'pluralize'
 import bytes, { type BytesOptions } from 'bytes'
 import { JSONPath, type JSONPathOptions } from 'jsonpath-plus'
 import { Parser, type ParserOptions } from '@json2csv/plainjs'
-import queryString, { type ParseOptions, type StringifyOptions } from 'query-string'
+import queryString, {
+	type ParseOptions,
+	type StringifyOptions
+} from 'query-string'
 import { type RefObject, useEffect, useRef, useState } from 'react'
 
 export const convertJSONToCsv = <T extends object>(
@@ -25,7 +28,11 @@ type CopyToClipboard = (str: string, callback?: () => void) => void
 export const copyToClipboard: CopyToClipboard = (str, callback) =>
 	window.navigator.clipboard.writeText(str).then(callback)
 
-type DownloadBlob = (blob: Blob, filename: string, callback?: () => void) => void
+type DownloadBlob = (
+	blob: Blob,
+	filename: string,
+	callback?: () => void
+) => void
 export const downloadBlob: DownloadBlob = (blob, filename, callback) => {
 	const element = document.createElement('a')
 
@@ -43,7 +50,10 @@ export const downloadBlob: DownloadBlob = (blob, filename, callback) => {
 
 export const getAppEnv = () => {
 	const host = window.location.host
-	const env = host.includes('localhost') ? 'dev' : host.split('.').pop()
+	const env =
+		host.includes('localhost') || host.includes('dassana-dev')
+			? 'dev'
+			: host.split('.').pop()
 
 	return env
 }
