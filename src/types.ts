@@ -28,6 +28,7 @@ export enum FilterKeys {
 	image = '$image',
 	isProd = '$isProd',
 	isCveExploitable = '$isCveExploitable',
+	isCveInCisaKev = '$isCveInCisaKev',
 	isCveTrending = '$isCveTrending',
 	isPatchable = '$isPatchable',
 	isSlaBreached = '$isSlaBreached',
