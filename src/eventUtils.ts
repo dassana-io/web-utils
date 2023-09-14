@@ -12,6 +12,8 @@ export enum ev {
 }
 
 export enum EmitterEventTypes {
+	drawerClosed = 'drawerClosed',
+	drawerOpened = 'drawerOpened',
 	getOrchestratorTopNavWidth = 'getOrchestratorTopNavWidth',
 	loggedOut = 'loggedOut',
 	logout = 'logout',
