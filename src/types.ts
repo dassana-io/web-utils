@@ -117,5 +117,6 @@ export enum StaticWidgetIds {
 }
 
 export enum QueryParams {
+	cloneFrom = 'cloneFrom',
 	forPDF = 'forPDF'
 }
