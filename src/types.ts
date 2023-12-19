@@ -79,6 +79,7 @@ export enum OperatingSystems {
 
 export enum Services {
 	appStore = 'appStore',
+	assets = 'assets',
 	billing = 'billing',
 	detections = 'detections',
 	findings = 'findings',
