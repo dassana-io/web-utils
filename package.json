@@ -11,7 +11,7 @@
 	"version": "0.11.30",
 	"dependencies": {
 		"@json2csv/plainjs": "^7.0.1",
-		"axios": "^0.27.2",
+		"axios": "^1.6.3",
 		"axios-retry": "^3.3.1",
 		"bytes": "^3.1.2",
 		"can-ndjson-stream": "^1.0.2",
