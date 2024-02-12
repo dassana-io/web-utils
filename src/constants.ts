@@ -17,6 +17,7 @@ export interface WindowSize {
 }
 
 export enum LocalStorage {
+	lastVisitedCustomDashboard = 'lastVisitedCustomDashboard',
 	onboarding = 'onboarding'
 }
 
