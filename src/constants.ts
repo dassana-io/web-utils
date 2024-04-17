@@ -102,6 +102,8 @@ const filterKeyMap: Record<string, string> = {
 	isCveExploitable: 'Is CVE Exploitable',
 	isCveInCisaKev: 'CISA KEV',
 	isCveTrending: 'Is CVE Trending',
+	isInternetExposed: 'Internet Reachability',
+	isReachable: 'Code Reachability',
 	isSlaBreached: 'Is SLA Breached'
 }
 
