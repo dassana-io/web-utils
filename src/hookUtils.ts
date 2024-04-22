@@ -106,29 +106,7 @@ export const useElementSize = (ref: RefObject<HTMLElement>) => {
 				observer.disconnect()
 			}
 		}
-	}, [ref.current]) // eslint-disable-line react-hooks/exhaustive-deps
-
-	useEffect(() => {
-		// https://stackoverflow.com/a/76163164
-		window.addEventListener('error', e => {
-			if (e.message === 'ResizeObserver loop limit exceeded') {
-				const resizeObserverErrDiv = document.getElementById(
-					'webpack-dev-server-client-overlay-div'
-				)
-				const resizeObserverErr = document.getElementById(
-					'webpack-dev-server-client-overlay'
-				)
-
-				if (resizeObserverErr) {
-					resizeObserverErr.setAttribute('style', 'display: none')
-				}
-
-				if (resizeObserverErrDiv) {
-					resizeObserverErrDiv.setAttribute('style', 'display: none')
-				}
-			}
-		})
-	}, [])
+	}, [ref])
 
 	return size
 }
