@@ -15,6 +15,7 @@ export enum FilterKeys {
 	assetId = '$assetId',
 	assetName = '$assetName',
 	assetRegion = '$assetRegion',
+	assetSources = '$assetSources',
 	assetType = '$assetType',
 	assignedTeamId = '$assignedTeamId',
 	assignedTeamName = '$assignedTeamName',
