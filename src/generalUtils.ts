@@ -190,7 +190,7 @@ export const useHoverState = <T extends HTMLElement>(): [
 export const formatCurrency = (
 	amount: number,
 	locale = 'en-US',
-	options = { currency: 'USD', style: 'currency' }
+	options: Intl.NumberFormatOptions = { currency: 'USD', style: 'currency' }
 ) => {
 	const formatter = new Intl.NumberFormat(locale, options)
 

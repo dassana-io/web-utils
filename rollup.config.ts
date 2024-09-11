@@ -10,6 +10,8 @@ const config = {
 		'axios',
 		'axios-retry',
 		'bytes',
+		'date-fns',
+		'date-fns-tz',
 		'idb-keyval',
 		'json-merge-patch',
 		'jsonpath-plus',
