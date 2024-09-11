@@ -12,6 +12,7 @@ export type DistributiveOmit<T, K extends keyof T> = T extends T
 export enum FilterKeys {
 	assetContainerId = '$assetContainerId',
 	assetContainerName = '$assetContainerName',
+	assetDeleted = '$assetDeleted',
 	assetId = '$assetId',
 	assetName = '$assetName',
 	assetRegion = '$assetRegion',
