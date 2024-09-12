@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import axios, {
 	type AxiosInstance,
 	type AxiosRequestConfig,
+	type AxiosRequestHeaders,
 	type CancelTokenSource
 } from 'axios'
 import { type Emitter, ev } from './eventUtils'
@@ -20,7 +21,9 @@ export const TOKEN = 'token'
 export type ErrorTypes = ErrorInfo | InternalError
 export type { AxiosInstance, AxiosRequestConfig } from 'axios'
 
-const getHeaders = (additionalHeaders = {}): AxiosRequestConfig['headers'] => ({
+const getHeaders = (
+	additionalHeaders = {}
+): AxiosRequestHeaders | HeadersInit => ({
 	...additionalHeaders,
 	Authorization: `Bearer ${localStorage.getItem(TOKEN)}`,
 	[DASSANA_REQUEST_ID]: uuidv4()
@@ -38,7 +41,7 @@ export const api: (apiUrl?: string) => AxiosInstance = (apiUrl = '') => {
 	apiClient.interceptors.request.use(
 		config => ({
 			...config,
-			headers: getHeaders(config.headers)
+			headers: getHeaders(config.headers) as AxiosRequestHeaders
 		}),
 		error => Promise.reject(error)
 	)
@@ -105,7 +108,7 @@ export const initNdJsonStream = async <T>({
 			headers: {
 				Accept: 'application/x-ndjson',
 				'Content-type': 'application/json',
-				...getHeaders(additionalConfig.headers)
+				...(getHeaders(additionalConfig.headers) as HeadersInit)
 			},
 			method
 		})
