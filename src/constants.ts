@@ -112,6 +112,8 @@ export const getFilterKeyLabel = (key: string): string => {
 
 	if (has(filterKeyMap, processedKey)) return filterKeyMap[processedKey]
 
+	if (processedKey === 'os') return 'OS'
+
 	return startCase(
 		endsWith(key, 'Id') ? processedKey.replace(/Id/i, 'ID') : processedKey
 	)
