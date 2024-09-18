@@ -104,15 +104,14 @@ const filterKeyMap: Record<string, string> = {
 	isCveTrending: 'Is CVE Trending',
 	isInternetExposed: 'Internet Reachability',
 	isReachable: 'Code Reachability',
-	isSlaBreached: 'Is SLA Breached'
+	isSlaBreached: 'Is SLA Breached',
+	os: 'OS'
 }
 
 export const getFilterKeyLabel = (key: string): string => {
 	const processedKey = key.replace(/[^a-zA-Z ]/g, '')
 
 	if (has(filterKeyMap, processedKey)) return filterKeyMap[processedKey]
-
-	if (processedKey === 'os') return 'OS'
 
 	return startCase(
 		endsWith(key, 'Id') ? processedKey.replace(/Id/i, 'ID') : processedKey
