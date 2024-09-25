@@ -10,6 +10,6 @@
  * Do not edit the class manually.
  */
 
-export interface ConfigObject extends null<string, any> {
+export interface ConfigObject extends Record<string, any> {
 	[key: string]: any
 }

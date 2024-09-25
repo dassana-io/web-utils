@@ -1,9 +1,9 @@
 import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
-import pkg from './package.json'
+import pkg from './package.json' assert { type: 'json' }
 import resolve from '@rollup/plugin-node-resolve'
 import terser from '@rollup/plugin-terser'
-import typescript from 'rollup-plugin-typescript2'
+import typescript from '@rollup/plugin-typescript'
 
 const config = {
 	external: [
@@ -37,9 +37,7 @@ const config = {
 		resolve({ browser: true }),
 		commonjs(),
 		json(), // For moment-timezone
-		typescript({
-			useTsconfigDeclarationDir: true
-		}),
+		typescript(),
 		terser()
 	]
 }
