@@ -37,7 +37,7 @@ const config = {
 		resolve({ browser: true }),
 		commonjs(),
 		json(), // For moment-timezone
-		typescript(),
+		typescript({ tsconfig: 'tsconfig.json' }),
 		terser()
 	]
 }
