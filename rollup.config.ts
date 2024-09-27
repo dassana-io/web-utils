@@ -6,22 +6,6 @@ import terser from '@rollup/plugin-terser'
 import typescript from '@rollup/plugin-typescript'
 
 const config = {
-	external: [
-		'axios',
-		'axios-retry',
-		'bytes',
-		'date-fns',
-		'date-fns-tz',
-		'idb-keyval',
-		'json-merge-patch',
-		'jsonpath-plus',
-		'lodash',
-		'mitt',
-		'moment-timezone',
-		'react',
-		'react-dom',
-		'uuid'
-	],
 	input: 'src/index.ts',
 	output: [
 		{
@@ -30,14 +14,16 @@ const config = {
 		},
 		{
 			file: pkg.module,
-			format: 'es'
+			format: 'esm'
 		}
 	],
 	plugins: [
-		resolve({ browser: true }),
+		resolve({ browser: true, preferBuiltins: false }),
 		commonjs(),
 		json(), // For moment-timezone
-		typescript({ tsconfig: 'tsconfig.json' }),
+		typescript({
+			exclude: ['**/__tests__']
+		}),
 		terser()
 	]
 }
