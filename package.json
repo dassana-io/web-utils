@@ -8,7 +8,7 @@
 		"url": "ssh://git@github.com:dassana-io/web-utils",
 		"directory": "@dassana-io/web-utils"
 	},
-	"version": "0.13.4",
+	"version": "0.13.5",
 	"dependencies": {
 		"@json2csv/plainjs": "^7.0.6",
 		"axios": "^1.7.7",
@@ -94,7 +94,7 @@
 		"typescript": "^5.6.2"
 	},
 	"peerDependencies": {
-		"react": "^18.3.1",
-		"react-dom": "^18.3.1"
+		"react": "^17 || ^18",
+		"react-dom": "^17 || ^18"
 	}
 }
