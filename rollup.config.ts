@@ -22,7 +22,12 @@ const config = {
 		commonjs(),
 		json(), // For moment-timezone
 		typescript({
-			exclude: ['src/__tests__/**', 'rollup.config.ts', 'setupTests.ts']
+			exclude: [
+				'src/__tests__/**',
+				'rollup.config.ts',
+				'setupTests.ts',
+				'jest-setup.ts'
+			]
 		}),
 		terser()
 	]
