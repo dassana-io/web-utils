@@ -6,6 +6,7 @@ import terser from '@rollup/plugin-terser'
 import typescript from '@rollup/plugin-typescript'
 
 const config = {
+	external: [...Object.keys(pkg.dependencies), 'react', 'react-dom'],
 	input: 'src/index.ts',
 	output: [
 		{
