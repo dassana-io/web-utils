@@ -101,6 +101,7 @@ export enum Services {
 	preferences = 'preferences',
 	profile = 'profile',
 	query = 'query',
+	settings = 'settings',
 	visualize = 'visualize'
 }
 
