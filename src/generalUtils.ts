@@ -238,3 +238,8 @@ export const removeItemsFromArray = <T>(
 			? !itemsToRemove.includes(item)
 			: item !== itemsToRemove
 	)
+
+export const scrollSelectionIntoView = (selector: string) => {
+	const selection = document.querySelector(selector)
+	selection?.scrollIntoView()
+}
